@@ -15,6 +15,7 @@ npx cap sync
 
 * [`echo(...)`](#echo)
 * [`play(...)`](#play)
+* [`pause(...)`](#pause)
 
 </docgen-index>
 
@@ -40,6 +41,21 @@ echo(options: { value: string; }) => Promise<{ value: string; }>
 
 ```typescript
 play(options: { value: string; }) => Promise<{ value: string; }>
+```
+
+| Param         | Type                            |
+| ------------- | ------------------------------- |
+| **`options`** | <code>{ value: string; }</code> |
+
+**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+
+--------------------
+
+
+### pause(...)
+
+```typescript
+pause(options: { value: string; }) => Promise<{ value: string; }>
 ```
 
 | Param         | Type                            |

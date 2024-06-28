@@ -8,7 +8,7 @@ import MediaPlayer
     var url: String
     var title: String
     
-    init(url: String, title: String) {
+    public init(url: String, title: String) {
         self.url = url
         self.title = title
     }
@@ -44,7 +44,7 @@ import MediaPlayer
         return value
     }
 
-    public func play(item: TMTPlayerItem, avPlayerDidEndPlaying: (() -> Void)) {
+    public func play(item: TMTPlayerItem, @escaping avPlayerDidEndPlaying: (() -> Void)) {
         
         guard let url = URL(string: item.url) else {
             return

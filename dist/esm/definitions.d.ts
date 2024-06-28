@@ -9,4 +9,9 @@ export interface TMTPlayerPlugin {
     }): Promise<{
         value: string;
     }>;
+    pause(options: {
+        value: string;
+    }): Promise<{
+        value: string;
+    }>;
 }
