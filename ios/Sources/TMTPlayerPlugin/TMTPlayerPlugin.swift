@@ -26,6 +26,7 @@ public class TMTPlayerPlugin: CAPPlugin, CAPBridgedPlugin {
         
         guard let mediaUrlString = call.getString("url") else {
             call.reject("url key-value is missing in request")
+            return
         }
         
         //  Save the call. Doc: https://capacitorjs.com/docs/core-apis/saving-calls

@@ -44,7 +44,7 @@ import MediaPlayer
         return value
     }
 
-    public func play(item: TMTPlayerItem, @escaping avPlayerDidEndPlaying: (() -> Void)) {
+    public func play(item: TMTPlayerItem, avPlayerDidEndPlaying: @escaping (() -> Void)) {
         
         guard let url = URL(string: item.url) else {
             return
@@ -79,8 +79,8 @@ import MediaPlayer
         // Define Now Playing Info
         var nowPlayingInfo = [String : Any]()
         nowPlayingInfo[MPMediaItemPropertyTitle] = tmtPlayerItem.title
-        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = item.currentTime().seconds
-        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = item.asset.duration.seconds
+        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = avPlayerItem.currentTime().seconds
+        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = avPlayerItem.asset.duration.seconds
         nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = self.avPlayer.rate
 
         // Set the metadata
