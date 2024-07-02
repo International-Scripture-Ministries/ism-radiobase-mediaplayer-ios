@@ -8,7 +8,7 @@ export class TMTPlayerWeb extends WebPlugin implements TMTPlayerPlugin {
     return options;
   }
 
-  async play(options: { value: string }): Promise<{ value: string }> {
+  async play(options: { url: string; title: String; artist: String; image: String }): Promise<{ url: string; title: String; artist: String; image: String }> {
     console.log('play', options);
     return options;
   }

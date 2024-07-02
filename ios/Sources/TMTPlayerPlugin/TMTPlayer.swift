@@ -7,10 +7,14 @@ import MediaPlayer
     
     var url: String
     var title: String
-    
-    public init(url: String, title: String) {
+    var artist: String
+    var image: String
+
+    public init(url: String, title: String, artist: String, image: String) {
         self.url = url
         self.title = title
+        self.artist = artist
+        self.image = image
     }
 }
 
@@ -83,11 +87,30 @@ import MediaPlayer
         nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = avPlayerItem.asset.duration.seconds
         nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = self.avPlayer.rate
 
-        // Set the metadata
-        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+        if tmtPlayerItem.image.isEmpty {
+            // Set the metadata
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+        } else {
+
+            DispatchQueue.global().async {
+                if let url = URL(string: tmtPlayerItem.image) {
+                    if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
+                        let artwork = MPMediaItemArtwork(boundsSize: image.size, requestHandler: { (_ size : CGSize) -> UIImage in
+                            return image
+                        })
+                        nowPlayingInfo[MPMediaItemPropertyArtwork] = artwork
+                        
+                        DispatchQueue.main.async {
+                            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+                        }
+                    }
+                }
+            }
+        }
+        
         MPNowPlayingInfoCenter.default().playbackState = .playing
     }
-    
+
     private func setupRemoteCommandCenter() {
         
         let commandCenter = MPRemoteCommandCenter.shared();
@@ -104,19 +127,21 @@ import MediaPlayer
             return .success
         }
 
-//        commandCenter.nextTrackCommand.isEnabled = true
-//        commandCenter.nextTrackCommand.addTarget { [weak self] event in
-//            self?.avPlayer.pause()
-//            self?.startNextMediaItem()
-//            return .success
-//        }
-//
-//        commandCenter.previousTrackCommand.isEnabled = true
-//        commandCenter.previousTrackCommand.addTarget { [weak self] event in
-//            self?.avPlayer.pause()
-//            self?.startNextMediaItem()
-//            return .success
-//        }
+        /*
+         commandCenter.nextTrackCommand.isEnabled = true
+         commandCenter.nextTrackCommand.addTarget { [weak self] event in
+             self?.avPlayer.pause()
+             self?.startNextMediaItem()
+             return .success
+         }
+
+         commandCenter.previousTrackCommand.isEnabled = true
+         commandCenter.previousTrackCommand.addTarget { [weak self] event in
+             self?.avPlayer.pause()
+             self?.startNextMediaItem()
+             return .success
+         }
+         */
 
         commandCenter.changePlaybackPositionCommand.isEnabled = true
         commandCenter.changePlaybackPositionCommand.addTarget { [weak self] event in

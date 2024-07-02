@@ -18,7 +18,7 @@ public class TMTPlayerPlugin: CAPPlugin, CAPBridgedPlugin {
     @objc func echo(_ call: CAPPluginCall) {
         let value = call.getString("value") ?? ""
         call.resolve([
-            "value": "echo called"
+            "value": value
         ])
     }
     
@@ -35,10 +35,12 @@ public class TMTPlayerPlugin: CAPPlugin, CAPBridgedPlugin {
         //  Play the item
         let tmpPlayerItem = TMTPlayerItem(
             url: mediaUrlString,
-            title: call.getString("title") ?? ""
+            title: call.getString("title") ?? "",
+            artist: call.getString("artist") ?? "",
+            image: call.getString("image") ?? ""
         )
         
-        TMTPlayer.shared.play(item: tmpPlayerItem) { [weak self] in
+        TMTPlayer.shared.play(item: tmpPlayerItem) { 
             //  handle avplayer did finish playing
             call.resolve([
                 "playerDidFinishPlayingItem": mediaUrlString
