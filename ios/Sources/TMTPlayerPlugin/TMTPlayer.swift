@@ -38,6 +38,7 @@ import MediaPlayer
 
     //  MARK: Private Properties
 
+    private let skipInterval = NSNumber(integerLiteral: 15)
     private var avPlayer = AVPlayer()
     private var cancellables: Set<AnyCancellable> = []
 
@@ -64,6 +65,11 @@ import MediaPlayer
     public func pause() {
         
         self.avPlayer.pause()
+    }
+
+    public func getCurrentPlayerItemSeekTime() -> Double {
+        
+        return self.avPlayer.currentTime().seconds
     }
 
     //  MARK: Private Methods
@@ -124,6 +130,24 @@ import MediaPlayer
         commandCenter.pauseCommand.isEnabled = true
         commandCenter.pauseCommand.addTarget { [weak self] event in
             self?.avPlayer.pause()
+            return .success
+        }
+
+        commandCenter.skipForwardCommand.isEnabled = true
+        commandCenter.skipForwardCommand.preferredIntervals = [self.skipInterval]
+        commandCenter.skipForwardCommand.addTarget { event in
+            guard let _ = event.command as? MPSkipIntervalCommand else {
+                return .noSuchContent
+            }
+            return .success
+        }
+
+        commandCenter.skipBackwardCommand.isEnabled = true
+        commandCenter.skipBackwardCommand.preferredIntervals = [self.skipInterval]
+        commandCenter.skipBackwardCommand.addTarget { event in
+            guard let _ = event.command as? MPSkipIntervalCommand else {
+                return .noSuchContent
+            }
             return .success
         }
 

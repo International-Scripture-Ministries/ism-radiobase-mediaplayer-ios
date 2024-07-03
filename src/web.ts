@@ -17,4 +17,9 @@ export class TMTPlayerWeb extends WebPlugin implements TMTPlayerPlugin {
     console.log('pause', options);
     return options;
   }
+
+  async getCurrentPlayerItemSeekTime(options: { value: string }): Promise<{ value: string }> {
+    console.log('getCurrentPlayerItemSeekTime', options);
+    return options;
+  }
 }

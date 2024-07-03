@@ -12,7 +12,8 @@ public class TMTPlayerPlugin: CAPPlugin, CAPBridgedPlugin {
     public let pluginMethods: [CAPPluginMethod] = [
         CAPPluginMethod(name: "echo", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "play", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "pause", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "pause", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "getCurrentPlayerItemSeekTime", returnType: CAPPluginReturnPromise)
     ]
     
     @objc func echo(_ call: CAPPluginCall) {
@@ -40,7 +41,7 @@ public class TMTPlayerPlugin: CAPPlugin, CAPBridgedPlugin {
             image: call.getString("image") ?? ""
         )
         
-        TMTPlayer.shared.play(item: tmpPlayerItem) { 
+        TMTPlayer.shared.play(item: tmpPlayerItem) {
             //  handle avplayer did finish playing
             call.resolve([
                 "playerDidFinishPlayingItem": mediaUrlString
@@ -54,6 +55,15 @@ public class TMTPlayerPlugin: CAPPlugin, CAPBridgedPlugin {
         
         call.resolve([
             "playerPaused": "true"
+        ])
+    }
+    
+    @objc func getCurrentPlayerItemSeekTime(_ call: CAPPluginCall) {
+        
+        let currentTimeInSeconds = TMTPlayer.shared.getCurrentPlayerItemSeekTime()
+        
+        call.resolve([
+            "currentTimeInSeconds": "\(currentTimeInSeconds)"
         ])
     }
 }
