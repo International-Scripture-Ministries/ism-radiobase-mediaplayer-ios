@@ -14,8 +14,13 @@ npx cap sync
 <docgen-index>
 
 * [`echo(...)`](#echo)
+* [`playMediaList(...)`](#playmedialist)
+* [`addMediaToList(...)`](#addmediatolist)
+* [`clearMediaList(...)`](#clearmedialist)
 * [`play(...)`](#play)
 * [`pause(...)`](#pause)
+* [`getCurrentPlayerItemSeekTime(...)`](#getcurrentplayeritemseektime)
+* [`fetchMediaListStatistics(...)`](#fetchmedialiststatistics)
 
 </docgen-index>
 
@@ -26,6 +31,51 @@ npx cap sync
 
 ```typescript
 echo(options: { value: string; }) => Promise<{ value: string; }>
+```
+
+| Param         | Type                            |
+| ------------- | ------------------------------- |
+| **`options`** | <code>{ value: string; }</code> |
+
+**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+
+--------------------
+
+
+### playMediaList(...)
+
+```typescript
+playMediaList(options: { value: string; }) => Promise<{ value: string; }>
+```
+
+| Param         | Type                            |
+| ------------- | ------------------------------- |
+| **`options`** | <code>{ value: string; }</code> |
+
+**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+
+--------------------
+
+
+### addMediaToList(...)
+
+```typescript
+addMediaToList(options: { value: string; }) => Promise<{ value: string; }>
+```
+
+| Param         | Type                            |
+| ------------- | ------------------------------- |
+| **`options`** | <code>{ value: string; }</code> |
+
+**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+
+--------------------
+
+
+### clearMediaList(...)
+
+```typescript
+clearMediaList(options: { value: string; }) => Promise<{ value: string; }>
 ```
 
 | Param         | Type                            |
@@ -56,6 +106,36 @@ play(options: { value: string; }) => Promise<{ value: string; }>
 
 ```typescript
 pause(options: { value: string; }) => Promise<{ value: string; }>
+```
+
+| Param         | Type                            |
+| ------------- | ------------------------------- |
+| **`options`** | <code>{ value: string; }</code> |
+
+**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+
+--------------------
+
+
+### getCurrentPlayerItemSeekTime(...)
+
+```typescript
+getCurrentPlayerItemSeekTime(options: { value: string; }) => Promise<{ value: string; }>
+```
+
+| Param         | Type                            |
+| ------------- | ------------------------------- |
+| **`options`** | <code>{ value: string; }</code> |
+
+**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+
+--------------------
+
+
+### fetchMediaListStatistics(...)
+
+```typescript
+fetchMediaListStatistics(options: { value: string; }) => Promise<{ value: string; }>
 ```
 
 | Param         | Type                            |

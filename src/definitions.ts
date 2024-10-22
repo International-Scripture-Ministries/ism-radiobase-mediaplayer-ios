@@ -1,6 +1,10 @@
 export interface TMTPlayerPlugin {
   echo(options: { value: string }): Promise<{ value: string }>;
-  play(options: { url: string; title: String; artist: String; image: String }): Promise<{ url: string; title: String; artist: String; image: String }>;
+  playMediaList(options: { value: string }): Promise<{ value: string }>;
+  addMediaToList(options: { value: string }): Promise<{ value: string }>;
+  clearMediaList(options: { value: string }): Promise<{ value: string }>;  
+  play(options: { value: string }): Promise<{ value: string }>;  
   pause(options: { value: string }): Promise<{ value: string }>;  
   getCurrentPlayerItemSeekTime(options: { value: string }): Promise<{ value: string }>;  
+  fetchMediaListStatistics(options: { value: string }): Promise<{ value: string }>;  
 }

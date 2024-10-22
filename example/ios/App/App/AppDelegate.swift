@@ -1,13 +1,18 @@
 import UIKit
 import Capacitor
+import Tmtplayer
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    private var plugin: TMTPlayerPlugin?
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+//        self.testPlugin()
         return true
     }
 
@@ -23,6 +28,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        
+//        let call = CAPPluginCall.init(callbackId: "0") { result, call in
+//            print(result)
+//            print(call)
+//        } error: { error in
+//            print(error)
+//        }
+//        
+////        self.plugin?.getCurrentPlayerItemSeekTime(call!)
+//        self.plugin?.fetchMediaListStatistics(call!)
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -46,4 +61,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return ApplicationDelegateProxy.shared.application(application, continue: userActivity, restorationHandler: restorationHandler)
     }
 
+}
+
+private extension AppDelegate {
+    
+    func testPlugin() {
+        
+        let JSON = """
+        [
+          {
+            "url": "https://teachings-cdn.thruthebible.io/2e9ca06c-0246-45f3-8179-1989f715903e",
+            "title": "title 1",
+            "artist": "artist 1",
+            "image": "",
+            "duration": "10",
+            "isStreaming": false,
+            "isPlaying": false,
+            "isStudy": true,
+            "playbackPositionInSeconds": 0
+          },
+          {
+            "url": "https://teachings-cdn.thruthebible.io/1167999d-a3db-44a4-b1dd-6ef0a9645186",
+            "title": "title 2",
+            "artist": "artist 2",
+            "image": "",
+            "duration": "15",
+            "isStreaming": false,
+            "isPlaying": false,
+            "isStudy": true,
+            "playbackPositionInSeconds": 0
+          }
+        ]
+        """
+        
+        let call = CAPPluginCall.init(callbackId: "1", options: ["mediaList": JSON]) { _, _ in } error: { _ in }
+        self.plugin = TMTPlayerPlugin()
+        self.plugin?.playMediaList(call!)
+    }
 }

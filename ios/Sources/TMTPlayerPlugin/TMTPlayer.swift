@@ -3,18 +3,64 @@ import AVKit
 import Combine
 import MediaPlayer
 
-@objc public class TMTPlayerItem: NSObject {
+public enum MediaItemState: String {
+    case incomplete = "INCOMPLETE", complete = "COMPLETE"
+}
+
+@objc public class TMTPlayerItem: NSObject, Decodable {
     
+    //  Data from Ionic to plugin
     var url: String
     var title: String
     var artist: String
     var image: String
+    var duration: String
+    var isStreaming: Bool
+    var isPlaying: Bool
+    var isStudy: Bool
+    var playbackPositionInSeconds: Double
 
-    public init(url: String, title: String, artist: String, image: String) {
-        self.url = url
-        self.title = title
-        self.artist = artist
-        self.image = image
+    //  Data from plugin to Ionic
+    var lastPlayedDateTime: TimeInterval = 0.0
+    var lastPlaybackPositionInSeconds: Double = 0.0
+    var state: MediaItemState = .incomplete
+
+    enum CodingKeys: String, CodingKey {
+        case url
+        case title
+        case artist
+        case image
+        case duration
+        case isStreaming
+        case isPlaying
+        case isStudy
+        case playbackPositionInSeconds
+    }
+    
+    required public init(from decoder: Decoder) throws {
+
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.url = try container.decodeIfPresent(String.self, forKey: .url) ?? ""
+        self.title = try container.decodeIfPresent(String.self, forKey: .title) ?? ""
+        self.artist = try container.decodeIfPresent(String.self, forKey: .artist) ?? ""
+        self.image = try container.decodeIfPresent(String.self, forKey: .image) ?? ""
+        self.duration = try container.decodeIfPresent(String.self, forKey: .duration) ?? ""
+        self.isStreaming = try container.decodeIfPresent(Bool.self, forKey: .isStreaming) ?? false
+        self.isPlaying = try container.decodeIfPresent(Bool.self, forKey: .isPlaying) ?? false
+        self.isStudy = try container.decodeIfPresent(Bool.self, forKey: .isStudy) ?? false
+        self.playbackPositionInSeconds = try container.decodeIfPresent(Double.self, forKey: .playbackPositionInSeconds) ?? 0.0
+    }
+    
+    func getStatistics() -> [String: String] {
+        
+        var json = [String: String]()
+        json["url"] = self.url
+        json["state"] = self.state.rawValue
+        json["duration"] = self.duration
+        json["position"] = "\(self.lastPlaybackPositionInSeconds)"
+        json["epoch"] = "\(self.lastPlayedDateTime)"
+        return json
     }
 }
 
@@ -30,17 +76,25 @@ import MediaPlayer
         try? AVAudioSession.sharedInstance().setActive(true)
         self.handlePlayerDidEndPlayingObserver()
         self.setupRemoteCommandCenter()
+        
+        self.avPlayer.addPeriodicTimeObserver(
+            forInterval: CMTime(seconds: 1, preferredTimescale: 1),
+            queue: nil) { [weak self] cmTime in
+                guard let self = self else { return }
+                self.mediaList[safe: self.currentMediaItemIndex]?.lastPlaybackPositionInSeconds = cmTime.seconds
+            }
     }
     
     //  MARK: Public Properties
 
-    private var avPlayerDidEndPlaying: (() -> Void)?
-
     //  MARK: Private Properties
 
-    private let skipInterval = NSNumber(integerLiteral: 15)
+    private var currentMediaItemIndex = -1
+    private var mediaList = [TMTPlayerItem]()
+    private var mediaItemDidEndPlayingSuccess: ((TMTPlayerItem) -> Void)?
     private var avPlayer = AVPlayer()
     private var cancellables: Set<AnyCancellable> = []
+    private let skipInterval = NSNumber(integerLiteral: 15)
 
     //  MARK: Public Methods
 
@@ -49,17 +103,35 @@ import MediaPlayer
         return value
     }
 
-    public func play(item: TMTPlayerItem, avPlayerDidEndPlaying: @escaping (() -> Void)) {
+    public func startPlayingMediaList(_ list: [TMTPlayerItem], mediaItemDidEndPlayingSuccess: @escaping ((TMTPlayerItem) -> Void)) {
         
-        guard let url = URL(string: item.url) else {
-            return
+        self.mediaList = list
+        self.mediaItemDidEndPlayingSuccess = mediaItemDidEndPlayingSuccess
+        self.startPlayerForMediaList()
+    }
+
+    public func addMediaToList(_ list: [TMTPlayerItem]) {
+        self.mediaList.append(contentsOf: list)
+    }
+    
+    public func clearMediaList() {
+
+        self.pause()
+        self.avPlayer.replaceCurrentItem(with: nil)
+        self.mediaList = []
+        self.currentMediaItemIndex = -1
+    }
+
+    @discardableResult
+    public func play() -> Bool {
+        
+        if self.avPlayer.currentItem != nil {
+            self.avPlayer.play()
+            self.mediaList[safe: self.currentMediaItemIndex]?.lastPlayedDateTime = Date().timeIntervalSince1970
+            return true
         }
         
-        self.avPlayerDidEndPlaying = avPlayerDidEndPlaying
-        let avPlayerItem = AVPlayerItem(url: url)
-        self.avPlayer.replaceCurrentItem(with: avPlayerItem)
-        self.avPlayer.play()
-        self.setupNowPlaying(avPlayerItem: avPlayerItem, tmtPlayerItem: item)
+        return false
     }
 
     public func pause() {
@@ -72,14 +144,66 @@ import MediaPlayer
         return self.avPlayer.currentTime().seconds
     }
 
+    public func fetchMediaListStatistics() -> Array<[String:String]> {
+        
+        let list = self.mediaList.compactMap { $0.getStatistics() }
+        return list
+    }
+
+    
+    
     //  MARK: Private Methods
+
+    private func startPlayerForMediaList() {
+        
+        guard !self.mediaList.isEmpty else {
+            return
+        }
+        self.playNextMediaItem()
+    }
+    
+    private func playNextMediaItem() {
+        
+        //  default value is -1
+        self.currentMediaItemIndex = self.currentMediaItemIndex + 1
+        
+        guard let mediaItem = self.getMediaItemFromCurrentIndex() else {
+            print("mediaList does not have any media item at index \(self.currentMediaItemIndex)")
+            //  reset current media item index
+            self.currentMediaItemIndex = -1
+            return
+        }
+        self.play(item: mediaItem)
+    }
+    
+    private func getMediaItemFromCurrentIndex() -> TMTPlayerItem? {
+        self.mediaList[safe: self.currentMediaItemIndex]
+    }
+    
+    private func play(item: TMTPlayerItem) {
+        
+        guard let url = URL(string: item.url) else {
+            print("url of media item can not be nil")
+            return
+        }
+        let avPlayerItem = AVPlayerItem(url: url)
+        self.avPlayer.replaceCurrentItem(with: avPlayerItem)
+        self.play()
+        self.setupNowPlaying(avPlayerItem: avPlayerItem, tmtPlayerItem: item)
+    }
 
     private func handlePlayerDidEndPlayingObserver() {
         
         NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)
         .sink { [weak self] _ in
-            self?.avPlayer.seek(to: CMTime.zero)
-            self?.avPlayerDidEndPlaying?()
+            guard let self = self else { return }
+
+            self.avPlayer.seek(to: CMTime.zero)
+            if let mediaItem = self.getMediaItemFromCurrentIndex() {
+                self.mediaItemDidEndPlayingSuccess?(mediaItem)
+                self.mediaList[safe: self.currentMediaItemIndex]?.state = .complete
+            }
+            self.playNextMediaItem()
         }
         .store(in: &cancellables)
     }
@@ -89,6 +213,7 @@ import MediaPlayer
         // Define Now Playing Info
         var nowPlayingInfo = [String : Any]()
         nowPlayingInfo[MPMediaItemPropertyTitle] = tmtPlayerItem.title
+        nowPlayingInfo[MPMediaItemPropertyArtist] = tmtPlayerItem.artist
         nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = avPlayerItem.currentTime().seconds
         nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = avPlayerItem.asset.duration.seconds
         nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = self.avPlayer.rate
