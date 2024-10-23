@@ -22,6 +22,8 @@ npx cap sync
 * [`getCurrentPlayerItemSeekTime(...)`](#getcurrentplayeritemseektime)
 * [`fetchMediaListStatistics(...)`](#fetchmedialiststatistics)
 * [`updatePlayerRate(...)`](#updateplayerrate)
+* [`getCurrentMediaItemPlaybackInfo(...)`](#getcurrentmediaitemplaybackinfo)
+* [`seekToTimeInSeconds(...)`](#seektotimeinseconds)
 
 </docgen-index>
 
@@ -152,6 +154,36 @@ fetchMediaListStatistics(options: { value: string; }) => Promise<{ value: string
 
 ```typescript
 updatePlayerRate(options: { value: string; }) => Promise<{ value: string; }>
+```
+
+| Param         | Type                            |
+| ------------- | ------------------------------- |
+| **`options`** | <code>{ value: string; }</code> |
+
+**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+
+--------------------
+
+
+### getCurrentMediaItemPlaybackInfo(...)
+
+```typescript
+getCurrentMediaItemPlaybackInfo(options: { value: string; }) => Promise<{ value: string; }>
+```
+
+| Param         | Type                            |
+| ------------- | ------------------------------- |
+| **`options`** | <code>{ value: string; }</code> |
+
+**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+
+--------------------
+
+
+### seekToTimeInSeconds(...)
+
+```typescript
+seekToTimeInSeconds(options: { value: string; }) => Promise<{ value: string; }>
 ```
 
 | Param         | Type                            |

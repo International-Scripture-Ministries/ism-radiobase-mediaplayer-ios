@@ -48,4 +48,14 @@ export class TMTPlayerWeb extends WebPlugin implements TMTPlayerPlugin {
     console.log('fetchMediaLupdatePlayerRateistStatistics', options);
     return options;
   }
+
+  async getCurrentMediaItemPlaybackInfo(options: { value: string }): Promise<{ value: string }> {
+    console.log('getCurrentMediaItemPlaybackInfo', options);
+    return options;
+  }
+
+  async seekToTimeInSeconds(options: { value: string }): Promise<{ value: string }> {
+    console.log('seekToTimeInSeconds', options);
+    return options;
+  }
 }

@@ -3,6 +3,10 @@ import AVKit
 import Combine
 import MediaPlayer
 
+public enum CurrentMediaItemPlaybackState: String {
+    case none, playing, paused, complete
+}
+
 public enum MediaItemState: String {
     case incomplete = "INCOMPLETE", complete = "COMPLETE"
 }
@@ -19,12 +23,13 @@ public enum MediaItemState: String {
     var isPlaying: Bool
     var isStudy: Bool
     var playbackPositionInSeconds: Double
-
+    
     //  Data from plugin to Ionic
     var lastPlayedDateTime: TimeInterval = 0.0
     var lastPlaybackPositionInSeconds: Double = 0.0
     var state: MediaItemState = .incomplete
-
+    var playbackState: CurrentMediaItemPlaybackState = .none
+    
     enum CodingKeys: String, CodingKey {
         case url
         case title
@@ -38,7 +43,7 @@ public enum MediaItemState: String {
     }
     
     required public init(from decoder: Decoder) throws {
-
+        
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         self.url = try container.decodeIfPresent(String.self, forKey: .url) ?? ""
@@ -60,6 +65,16 @@ public enum MediaItemState: String {
         json["duration"] = self.duration
         json["position"] = "\(self.lastPlaybackPositionInSeconds)"
         json["epoch"] = "\(self.lastPlayedDateTime)"
+        return json
+    }
+    
+    func getPlaybackInfo() -> [String: String] {
+        
+        var json = [String: String]()
+        json["url"] = self.url
+        json["duration"] = self.duration
+        json["position"] = "\(self.lastPlaybackPositionInSeconds)"
+        json["state"] = self.playbackState.rawValue
         return json
     }
 }
@@ -128,6 +143,7 @@ public enum MediaItemState: String {
         if self.avPlayer.currentItem != nil {
             self.avPlayer.play()
             self.mediaList[safe: self.currentMediaItemIndex]?.lastPlayedDateTime = Date().timeIntervalSince1970
+            self.mediaList[safe: self.currentMediaItemIndex]?.playbackState = .playing
             return true
         }
         
@@ -137,6 +153,7 @@ public enum MediaItemState: String {
     public func pause() {
         
         self.avPlayer.pause()
+        self.mediaList[safe: self.currentMediaItemIndex]?.playbackState = .paused
     }
 
     public func getCurrentPlayerItemSeekTime() -> Double {
@@ -146,13 +163,42 @@ public enum MediaItemState: String {
 
     public func fetchMediaListStatistics() -> Array<[String:String]> {
         
-        let list = self.mediaList.compactMap { $0.getStatistics() }
+        let allCompletedItems = self.mediaList.filter { $0.state == .complete }
+        var list = allCompletedItems.compactMap { $0.getStatistics() }
+
+        if let firstInCompletedItem = self.mediaList.filter ({ $0.state == .incomplete }).first {
+            list.append(firstInCompletedItem.getStatistics())
+        }
+
         return list
     }
 
     public func updatePlayerRate(_ rate: Float) {
         
         self.avPlayer.rate = rate
+    }
+
+    public func getCurrentMediaItemPlaybackInfo() -> [String: String] {
+        
+        guard let currentItem = self.mediaList[safe: self.currentMediaItemIndex] else {
+            print("current mediaList does not have media item at index: \(self.currentMediaItemIndex)")
+            return [:]
+        }
+        
+        return currentItem.getPlaybackInfo()
+    }
+    
+    public func seekToTimeInSeconds(_ seconds: Double) {
+        
+        let playerRate = self.avPlayer.rate
+        let seekToTime = CMTime(seconds: seconds, preferredTimescale: CMTimeScale(1000))
+        self.avPlayer.seek(to: seekToTime) { [weak self] success in
+            guard let self else { return }
+            if success {
+                self.avPlayer.rate = playerRate
+                self.updateSeekPositionOnLockScreen()
+            }
+        }
     }
     
     
@@ -210,10 +256,20 @@ public enum MediaItemState: String {
             if let mediaItem = self.getMediaItemFromCurrentIndex() {
                 self.mediaItemDidEndPlayingSuccess?(mediaItem)
                 self.mediaList[safe: self.currentMediaItemIndex]?.state = .complete
+                self.mediaList[safe: self.currentMediaItemIndex]?.playbackState = .complete
             }
             self.playNextMediaItem()
         }
         .store(in: &cancellables)
+    }
+    
+    private func updateSeekPositionOnLockScreen() {
+        
+        if var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo {
+            nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = self.avPlayer.currentTime().seconds
+            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = self.avPlayer.rate
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+        }
     }
     
     private func setupNowPlaying(avPlayerItem: AVPlayerItem, tmtPlayerItem: TMTPlayerItem) {
@@ -272,15 +328,22 @@ public enum MediaItemState: String {
             guard let _ = event.command as? MPSkipIntervalCommand else {
                 return .noSuchContent
             }
+            
+            let newTime = self.avPlayer.currentTime() + CMTime(seconds: self.skipInterval.doubleValue, preferredTimescale: .max)
+            self.avPlayer.seek(to: newTime)
+            self.updateSeekPositionOnLockScreen()
             return .success
         }
-
+        
         commandCenter.skipBackwardCommand.isEnabled = true
         commandCenter.skipBackwardCommand.preferredIntervals = [self.skipInterval]
         commandCenter.skipBackwardCommand.addTarget { event in
             guard let _ = event.command as? MPSkipIntervalCommand else {
                 return .noSuchContent
             }
+            let newTime = self.avPlayer.currentTime() - CMTime(seconds: self.skipInterval.doubleValue, preferredTimescale: .max)
+            self.avPlayer.seek(to: newTime)
+            self.updateSeekPositionOnLockScreen()
             return .success
         }
 

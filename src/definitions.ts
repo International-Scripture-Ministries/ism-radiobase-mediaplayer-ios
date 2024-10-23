@@ -8,4 +8,6 @@ export interface TMTPlayerPlugin {
   getCurrentPlayerItemSeekTime(options: { value: string }): Promise<{ value: string }>;  
   fetchMediaListStatistics(options: { value: string }): Promise<{ value: string }>;  
   updatePlayerRate(options: { value: string }): Promise<{ value: string }>;  
+  getCurrentMediaItemPlaybackInfo(options: { value: string }): Promise<{ value: string }>;  
+  seekToTimeInSeconds(options: { value: string }): Promise<{ value: string }>;  
 }

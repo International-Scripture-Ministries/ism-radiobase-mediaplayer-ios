@@ -18,7 +18,9 @@ public class TMTPlayerPlugin: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "pause", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "getCurrentPlayerItemSeekTime", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "fetchMediaListStatistics", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "updatePlayerRate", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "updatePlayerRate", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "getCurrentMediaItemPlaybackInfo", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "seekToTimeInSeconds", returnType: CAPPluginReturnPromise)
     ]
     
     @objc func echo(_ call: CAPPluginCall) {
@@ -81,7 +83,7 @@ public class TMTPlayerPlugin: CAPPlugin, CAPBridgedPlugin {
         TMTPlayer.shared.clearMediaList()
     }
 
-    @objc func play(_ call: CAPPluginCall) {
+    @objc public func play(_ call: CAPPluginCall) {
         
         let isPlaying = TMTPlayer.shared.play()
         call.resolve([
@@ -89,7 +91,7 @@ public class TMTPlayerPlugin: CAPPlugin, CAPBridgedPlugin {
         ])
     }
     
-    @objc func pause(_ call: CAPPluginCall) {
+    @objc public func pause(_ call: CAPPluginCall) {
         
         TMTPlayer.shared.pause()
         call.resolve([
@@ -123,6 +125,27 @@ public class TMTPlayerPlugin: CAPPlugin, CAPBridgedPlugin {
         TMTPlayer.shared.updatePlayerRate(rate)
         call.resolve([
             "playerRateUpdated": "true"
+        ])
+    }
+    
+    @objc public func getCurrentMediaItemPlaybackInfo(_ call: CAPPluginCall) {
+        
+        let info = TMTPlayer.shared.getCurrentMediaItemPlaybackInfo()
+        call.resolve([
+            "currentMediaItemPlaybackInfo": info
+        ])
+    }
+    
+    @objc public func seekToTimeInSeconds(_ call: CAPPluginCall) {
+        
+        guard let seconds = call.getDouble("seconds") else {
+            call.reject("seconds (Double) key-value is missing in request")
+            return
+        }
+
+        TMTPlayer.shared.seekToTimeInSeconds(seconds)
+        call.resolve([
+            "seekToTimeInSeconds": "true"
         ])
     }
 }

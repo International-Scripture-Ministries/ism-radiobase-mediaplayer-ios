@@ -29,15 +29,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
         
-//        let call = CAPPluginCall.init(callbackId: "0", options: ["rate": 1.5]) { result, call in
+//        let call = CAPPluginCall.init(callbackId: "0", options: ["seconds": 10.0]) { result, call in
 //            print(result)
 //            print(call)
 //        } error: { error in
 //            print(error)
 //        }
 //        
-//        self.plugin?.updatePlayerRate(call!)
-        
+//        self.plugin?.fetchMediaListStatistics(call!)
+
 //
 ////        self.plugin?.getCurrentPlayerItemSeekTime(call!)
 //        self.plugin?.fetchMediaListStatistics(call!)

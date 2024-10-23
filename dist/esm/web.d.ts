@@ -46,4 +46,14 @@ export declare class TMTPlayerWeb extends WebPlugin implements TMTPlayerPlugin {
     }): Promise<{
         value: string;
     }>;
+    getCurrentMediaItemPlaybackInfo(options: {
+        value: string;
+    }): Promise<{
+        value: string;
+    }>;
+    seekToTimeInSeconds(options: {
+        value: string;
+    }): Promise<{
+        value: string;
+    }>;
 }
