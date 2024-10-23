@@ -41,4 +41,9 @@ export declare class TMTPlayerWeb extends WebPlugin implements TMTPlayerPlugin {
     }): Promise<{
         value: string;
     }>;
+    updatePlayerRate(options: {
+        value: string;
+    }): Promise<{
+        value: string;
+    }>;
 }

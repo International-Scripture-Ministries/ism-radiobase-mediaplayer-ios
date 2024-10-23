@@ -150,6 +150,11 @@ public enum MediaItemState: String {
         return list
     }
 
+    public func updatePlayerRate(_ rate: Float) {
+        
+        self.avPlayer.rate = rate
+    }
+    
     
     
     //  MARK: Private Methods
@@ -188,6 +193,9 @@ public enum MediaItemState: String {
         }
         let avPlayerItem = AVPlayerItem(url: url)
         self.avPlayer.replaceCurrentItem(with: avPlayerItem)
+        if item.playbackPositionInSeconds > 0.0 {
+            self.avPlayer.seek(to: CMTime(seconds: item.playbackPositionInSeconds, preferredTimescale: 1), toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero)
+        }
         self.play()
         self.setupNowPlaying(avPlayerItem: avPlayerItem, tmtPlayerItem: item)
     }

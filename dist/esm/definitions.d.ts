@@ -39,4 +39,9 @@ export interface TMTPlayerPlugin {
     }): Promise<{
         value: string;
     }>;
+    updatePlayerRate(options: {
+        value: string;
+    }): Promise<{
+        value: string;
+    }>;
 }

@@ -17,7 +17,8 @@ public class TMTPlayerPlugin: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "play", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "pause", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "getCurrentPlayerItemSeekTime", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "fetchMediaListStatistics", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "fetchMediaListStatistics", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "updatePlayerRate", returnType: CAPPluginReturnPromise)
     ]
     
     @objc func echo(_ call: CAPPluginCall) {
@@ -111,5 +112,17 @@ public class TMTPlayerPlugin: CAPPlugin, CAPBridgedPlugin {
             "statisticsList": statisticsList
         ])
     }
-}
 
+    @objc public func updatePlayerRate(_ call: CAPPluginCall) {
+        
+        guard let rate = call.getFloat("rate") else {
+            call.reject("rate (Float) key-value is missing in request")
+            return
+        }
+
+        TMTPlayer.shared.updatePlayerRate(rate)
+        call.resolve([
+            "playerRateUpdated": "true"
+        ])
+    }
+}

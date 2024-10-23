@@ -32,5 +32,9 @@ export class TMTPlayerWeb extends WebPlugin {
         console.log('fetchMediaListStatistics', options);
         return options;
     }
+    async updatePlayerRate(options) {
+        console.log('fetchMediaLupdatePlayerRateistStatistics', options);
+        return options;
+    }
 }
 //# sourceMappingURL=web.js.map

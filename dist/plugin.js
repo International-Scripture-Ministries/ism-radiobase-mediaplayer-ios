@@ -38,6 +38,10 @@ var capacitorTMTPlayer = (function (exports, core) {
             console.log('fetchMediaListStatistics', options);
             return options;
         }
+        async updatePlayerRate(options) {
+            console.log('fetchMediaLupdatePlayerRateistStatistics', options);
+            return options;
+        }
     }
 
     var web = /*#__PURE__*/Object.freeze({
