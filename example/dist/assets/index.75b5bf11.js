@@ -570,7 +570,7 @@ registerPlugin("CapacitorHttp", {
   web: () => new CapacitorHttpPluginWeb()
 });
 const TMTPlayer = registerPlugin("TMTPlayer", {
-  web: () => __vitePreload(() => import("./web.d5b40d84.js"), true ? [] : void 0).then((m) => new m.TMTPlayerWeb())
+  web: () => __vitePreload(() => import("./web.1c62b1c8.js"), true ? [] : void 0).then((m) => new m.TMTPlayerWeb())
 });
 window.testEcho = () => {
   const inputValue = document.getElementById("echoInput").value;

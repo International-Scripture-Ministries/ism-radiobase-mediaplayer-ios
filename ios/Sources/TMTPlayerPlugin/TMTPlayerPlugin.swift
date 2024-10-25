@@ -60,7 +60,7 @@ public class TMTPlayerPlugin: CAPPlugin, CAPBridgedPlugin {
         })
     }
 
-    @objc func addMediaToList(_ call: CAPPluginCall) {
+    @objc public func addMediaToList(_ call: CAPPluginCall) {
         
         guard let mediaListString = call.getString("mediaList") else {
             call.reject("mediaList key-value is missing in request")

@@ -24,6 +24,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        
+//        let JSON = """
+//        [
+//          {
+//            "url": "https://teachings-cdn.thruthebible.io/1167999d-a3db-44a4-b1dd-6ef0a9645186",
+//            "title": "title 2",
+//            "artist": "artist 2",
+//            "image": "",
+//            "duration": "15",
+//            "isStreaming": false,
+//            "isPlaying": false,
+//            "isStudy": true,
+//            "playbackPositionInSeconds": 0
+//          }
+//        ]
+//        """
+//        
+//        let call = CAPPluginCall.init(callbackId: "22", options: ["mediaList": JSON]) { _, _ in } error: { _ in }
+//        self.plugin?.addMediaToList(call!)
+
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -82,17 +102,6 @@ private extension AppDelegate {
             "isPlaying": false,
             "isStudy": true,
             "playbackPositionInSeconds": 10.0
-          },
-          {
-            "url": "https://teachings-cdn.thruthebible.io/1167999d-a3db-44a4-b1dd-6ef0a9645186",
-            "title": "title 2",
-            "artist": "artist 2",
-            "image": "",
-            "duration": "15",
-            "isStreaming": false,
-            "isPlaying": false,
-            "isStudy": true,
-            "playbackPositionInSeconds": 0
           }
         ]
         """
