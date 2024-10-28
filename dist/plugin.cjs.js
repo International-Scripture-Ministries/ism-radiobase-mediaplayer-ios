@@ -49,6 +49,10 @@ class TMTPlayerWeb extends core.WebPlugin {
         console.log('getCurrentMediaItemPlaybackInfo', options);
         return options;
     }
+    async removeAllMediaItemsExceptCurrentPlayingItem(options) {
+        console.log('removeAllMediaItemsExceptCurrentPlayingItem', options);
+        return options;
+    }
     async seekToTimeInSeconds(options) {
         console.log('seekToTimeInSeconds', options);
         return options;

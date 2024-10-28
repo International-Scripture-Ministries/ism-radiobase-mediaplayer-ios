@@ -20,6 +20,7 @@ public class TMTPlayerPlugin: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "fetchMediaListStatistics", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "updatePlayerRate", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "getCurrentMediaItemPlaybackInfo", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "removeAllMediaItemsExceptCurrentPlayingItem", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "seekToTimeInSeconds", returnType: CAPPluginReturnPromise)
     ]
     
@@ -135,6 +136,15 @@ public class TMTPlayerPlugin: CAPPlugin, CAPBridgedPlugin {
             "currentMediaItemPlaybackInfo": info
         ])
     }
+    
+    @objc public func removeAllMediaItemsExceptCurrentPlayingItem(_ call: CAPPluginCall) {
+        
+        let info = TMTPlayer.shared.removeAllMediaItemsExceptCurrentPlayingItem()
+        call.resolve([
+            "removeAllMediaItemsExceptCurrentPlayingItem": "true"
+        ])
+    }
+    
     
     @objc public func seekToTimeInSeconds(_ call: CAPPluginCall) {
         

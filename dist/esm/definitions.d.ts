@@ -49,6 +49,11 @@ export interface TMTPlayerPlugin {
     }): Promise<{
         value: string;
     }>;
+    removeAllMediaItemsExceptCurrentPlayingItem(options: {
+        value: string;
+    }): Promise<{
+        value: string;
+    }>;
     seekToTimeInSeconds(options: {
         value: string;
     }): Promise<{

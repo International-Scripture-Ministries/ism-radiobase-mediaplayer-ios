@@ -5,6 +5,10 @@ import MediaPlayer
 
 public enum CurrentMediaItemPlaybackState: String {
     case none, playing, paused, complete
+    
+    var isMediaPlayingOrPaused: Bool {
+        self == .playing || self == .paused
+    }
 }
 
 public enum MediaItemState: String {
@@ -88,7 +92,7 @@ public enum MediaItemState: String {
     
     public static let shared = TMTPlayer()
     
-    private override init() { 
+    private override init() {
         super.init()
         try? AVAudioSession.sharedInstance().setCategory(.playback)
         try? AVAudioSession.sharedInstance().setActive(true)
@@ -99,8 +103,14 @@ public enum MediaItemState: String {
             forInterval: CMTime(seconds: 1, preferredTimescale: 1),
             queue: nil) { [weak self] cmTime in
                 guard let self = self else { return }
-                self.mediaList[safe: self.currentMediaItemIndex]?.lastPlaybackPositionInSeconds = cmTime.seconds
-                self.mediaList[safe: self.currentMediaItemIndex]?.durationInSeconds = self.avPlayer.currentItem?.duration.seconds ?? 0.0
+                let currentItemDuration = self.avPlayer.currentItem?.duration.seconds ?? 0.0
+                if cmTime.seconds >= currentItemDuration {
+                    self.mediaList[safe: self.currentMediaItemIndex]?.lastPlaybackPositionInSeconds = currentItemDuration
+                } else {
+                    self.mediaList[safe: self.currentMediaItemIndex]?.lastPlaybackPositionInSeconds = cmTime.seconds
+                }
+                self.mediaList[safe: self.currentMediaItemIndex]?.durationInSeconds = currentItemDuration
+                self.updateSeekPositionOnLockScreen()
             }
     }
     
@@ -205,6 +215,10 @@ public enum MediaItemState: String {
         }
     }
     
+    public func removeAllMediaItemsExceptCurrentPlayingItem() {
+        
+        self.mediaList.removeAll { !$0.playbackState.isMediaPlayingOrPaused }
+    }
     
     
     //  MARK: Private Methods
