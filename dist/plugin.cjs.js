@@ -57,6 +57,10 @@ class TMTPlayerWeb extends core.WebPlugin {
         console.log('seekToTimeInSeconds', options);
         return options;
     }
+    async checkPlayingMediaList(options) {
+        console.log('checkPlayingMediaList', options);
+        return options;
+    }
 }
 
 var web = /*#__PURE__*/Object.freeze({

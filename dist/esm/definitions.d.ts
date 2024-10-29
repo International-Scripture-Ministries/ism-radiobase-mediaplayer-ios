@@ -59,4 +59,9 @@ export interface TMTPlayerPlugin {
     }): Promise<{
         value: string;
     }>;
+    checkPlayingMediaList(options: {
+        value: string;
+    }): Promise<{
+        value: string;
+    }>;
 }

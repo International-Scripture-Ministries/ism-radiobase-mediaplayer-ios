@@ -48,5 +48,9 @@ export class TMTPlayerWeb extends WebPlugin {
         console.log('seekToTimeInSeconds', options);
         return options;
     }
+    async checkPlayingMediaList(options) {
+        console.log('checkPlayingMediaList', options);
+        return options;
+    }
 }
 //# sourceMappingURL=web.js.map

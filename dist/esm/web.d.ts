@@ -61,4 +61,9 @@ export declare class TMTPlayerWeb extends WebPlugin implements TMTPlayerPlugin {
     }): Promise<{
         value: string;
     }>;
+    checkPlayingMediaList(options: {
+        value: string;
+    }): Promise<{
+        value: string;
+    }>;
 }

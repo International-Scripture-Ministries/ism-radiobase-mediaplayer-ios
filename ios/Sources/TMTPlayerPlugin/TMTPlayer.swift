@@ -138,6 +138,12 @@ public enum MediaItemState: String {
         self.mediaItemDidEndPlayingSuccess = mediaItemDidEndPlayingSuccess
         self.startPlayerForMediaList()
     }
+    
+    public func checkPlayingMediaList( mediaItemDidEndPlayingSuccess: @escaping ((TMTPlayerItem) -> Void)) {
+        
+        self.mediaItemDidEndPlayingSuccess = mediaItemDidEndPlayingSuccess
+        self.startPlayerForMediaList()
+    }
 
     public func addMediaToList(_ list: [TMTPlayerItem]) {
         self.mediaList.append(contentsOf: list)
@@ -218,13 +224,15 @@ public enum MediaItemState: String {
     public func removeAllMediaItemsExceptCurrentPlayingItem() {
         
         self.mediaList.removeAll { !$0.playbackState.isMediaPlayingOrPaused }
+//        self.mediaList.enumerated().compactMap { $0.offset == self.currentMediaItemIndex ? $0.element : nil }
+        self.currentMediaItemIndex = 0
     }
     
     
     //  MARK: Private Methods
 
     private func startPlayerForMediaList() {
-        
+        print("mediaList  \(self.mediaList.isEmpty)")
         guard !self.mediaList.isEmpty else {
             return
         }
@@ -240,6 +248,7 @@ public enum MediaItemState: String {
             print("mediaList does not have any media item at index \(self.currentMediaItemIndex)")
             //  reset current media item index
             self.currentMediaItemIndex = -1
+            
             return
         }
         self.play(item: mediaItem)

@@ -63,4 +63,8 @@ export class TMTPlayerWeb extends WebPlugin implements TMTPlayerPlugin {
     console.log('seekToTimeInSeconds', options);
     return options;
   }
+  async checkPlayingMediaList(options: { value: string }): Promise<{ value: string }> {
+    console.log('checkPlayingMediaList', options);
+    return options;
+  }
 }

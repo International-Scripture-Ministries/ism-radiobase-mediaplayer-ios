@@ -25,6 +25,7 @@ npx cap sync
 * [`getCurrentMediaItemPlaybackInfo(...)`](#getcurrentmediaitemplaybackinfo)
 * [`removeAllMediaItemsExceptCurrentPlayingItem(...)`](#removeallmediaitemsexceptcurrentplayingitem)
 * [`seekToTimeInSeconds(...)`](#seektotimeinseconds)
+* [`checkPlayingMediaList(...)`](#checkplayingmedialist)
 
 </docgen-index>
 
@@ -200,6 +201,21 @@ removeAllMediaItemsExceptCurrentPlayingItem(options: { value: string; }) => Prom
 
 ```typescript
 seekToTimeInSeconds(options: { value: string; }) => Promise<{ value: string; }>
+```
+
+| Param         | Type                            |
+| ------------- | ------------------------------- |
+| **`options`** | <code>{ value: string; }</code> |
+
+**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+
+--------------------
+
+
+### checkPlayingMediaList(...)
+
+```typescript
+checkPlayingMediaList(options: { value: string; }) => Promise<{ value: string; }>
 ```
 
 | Param         | Type                            |

@@ -10,5 +10,6 @@ export interface TMTPlayerPlugin {
   updatePlayerRate(options: { value: string }): Promise<{ value: string }>;  
   getCurrentMediaItemPlaybackInfo(options: { value: string }): Promise<{ value: string }>;  
   removeAllMediaItemsExceptCurrentPlayingItem(options: { value: string }): Promise<{ value: string }>;  
-  seekToTimeInSeconds(options: { value: string }): Promise<{ value: string }>;  
+  seekToTimeInSeconds(options: { value: string }): Promise<{ value: string }>; 
+  checkPlayingMediaList(options: { value: string }): Promise<{ value: string }>; 
 }
