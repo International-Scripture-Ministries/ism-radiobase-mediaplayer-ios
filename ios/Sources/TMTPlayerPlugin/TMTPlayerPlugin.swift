@@ -21,7 +21,8 @@ public class TMTPlayerPlugin: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "updatePlayerRate", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "getCurrentMediaItemPlaybackInfo", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "removeAllMediaItemsExceptCurrentPlayingItem", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "seekToTimeInSeconds", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "seekToTimeInSeconds", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "checkPlayingMediaList", returnType: CAPPluginReturnPromise)
     ]
     
     @objc func echo(_ call: CAPPluginCall) {
@@ -139,7 +140,7 @@ public class TMTPlayerPlugin: CAPPlugin, CAPBridgedPlugin {
     
     @objc public func removeAllMediaItemsExceptCurrentPlayingItem(_ call: CAPPluginCall) {
         
-        let info = TMTPlayer.shared.removeAllMediaItemsExceptCurrentPlayingItem()
+        TMTPlayer.shared.removeAllMediaItemsExceptCurrentPlayingItem()
         call.resolve([
             "removeAllMediaItemsExceptCurrentPlayingItem": "true"
         ])
@@ -157,5 +158,21 @@ public class TMTPlayerPlugin: CAPPlugin, CAPBridgedPlugin {
         call.resolve([
             "seekToTimeInSeconds": "true"
         ])
+    }
+    
+    @objc public func checkPlayingMediaList(_ call: CAPPluginCall) {
+        
+        //  Save the call. Doc: https://capacitorjs.com/docs/core-apis/saving-calls
+        call.keepAlive = true
+        
+        //  Start playing media list
+        
+        TMTPlayer.shared.checkPlayingMediaList(
+            mediaItemDidEndPlayingSuccess: { item in
+                //  handle avplayer did finish playing
+                call.resolve([
+                    "playerDidFinishPlayingItem": item.url
+                ])
+        })
     }
 }

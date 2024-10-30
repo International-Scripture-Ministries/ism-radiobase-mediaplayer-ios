@@ -140,9 +140,7 @@ public enum MediaItemState: String {
     }
     
     public func checkPlayingMediaList( mediaItemDidEndPlayingSuccess: @escaping ((TMTPlayerItem) -> Void)) {
-        
         self.mediaItemDidEndPlayingSuccess = mediaItemDidEndPlayingSuccess
-        self.startPlayerForMediaList()
     }
 
     public func addMediaToList(_ list: [TMTPlayerItem]) {
