@@ -118,6 +118,7 @@ public enum MediaItemState: String {
 
     //  MARK: Private Properties
 
+    private var currentAVPlayerRate: Float = 1.0
     private var currentMediaItemIndex = -1
     private var mediaList = [TMTPlayerItem]()
     private var mediaItemDidEndPlayingSuccess: ((TMTPlayerItem) -> Void)?
@@ -162,6 +163,7 @@ public enum MediaItemState: String {
             self.avPlayer.play()
             self.mediaList[safe: self.currentMediaItemIndex]?.lastPlayedDateTime = Date().timeIntervalSince1970
             self.mediaList[safe: self.currentMediaItemIndex]?.playbackState = .playing
+            self.updateCurrentPlayerRate()
             return true
         }
         
@@ -193,6 +195,7 @@ public enum MediaItemState: String {
 
     public func updatePlayerRate(_ rate: Float) {
         
+        self.currentAVPlayerRate = rate
         self.avPlayer.rate = rate
     }
 
@@ -271,6 +274,15 @@ public enum MediaItemState: String {
         self.setupNowPlaying(avPlayerItem: avPlayerItem, tmtPlayerItem: item)
     }
 
+    private func updateCurrentPlayerRate() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else {
+                return
+            }
+            self.avPlayer.rate = self.currentAVPlayerRate
+        }
+    }
+    
     private func handlePlayerDidEndPlayingObserver() {
         
         NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)

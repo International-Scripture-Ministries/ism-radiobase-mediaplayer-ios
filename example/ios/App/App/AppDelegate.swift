@@ -12,7 +12,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-//        self.testPlugin()
+        self.testPlugin()
         return true
     }
 
@@ -49,13 +49,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
         
-//        let call = CAPPluginCall.init(callbackId: "0", options: ["seconds": 10.0]) { result, call in
-//            print(result)
-//            print(call)
-//        } error: { error in
-//            print(error)
-//        }
-//        
+        let call = CAPPluginCall.init(callbackId: "0", options: ["rate": 2.0]) { result, call in
+            print(result)
+            print(call)
+        } error: { error in
+            print(error)
+        }
+        self.plugin?.updatePlayerRate(call!)
+//
 //        self.plugin?.fetchMediaListStatistics(call!)
 
 //
@@ -102,6 +103,17 @@ private extension AppDelegate {
             "isPlaying": false,
             "isStudy": true,
             "playbackPositionInSeconds": 10.0
+          },
+          {
+            "url": "https://teachings-cdn.thruthebible.io/1167999d-a3db-44a4-b1dd-6ef0a9645186",
+            "title": "title 2",
+            "artist": "artist 2",
+            "image": "",
+            "duration": "15",
+            "isStreaming": false,
+            "isPlaying": false,
+            "isStudy": true,
+            "playbackPositionInSeconds": 0
           }
         ]
         """
