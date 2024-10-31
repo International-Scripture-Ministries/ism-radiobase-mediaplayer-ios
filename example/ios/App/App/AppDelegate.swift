@@ -8,11 +8,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     private var plugin: TMTPlayerPlugin?
-    
+    private var isPlaying = false
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
         self.testPlugin()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
+            guard let self else {
+                return
+            }
+            let call = CAPPluginCall.init(callbackId: "0", options: ["rate": 2.0]) { result, call in
+                print(result)
+                print(call)
+            } error: { error in
+                print(error)
+            }
+            self.plugin?.updatePlayerRate(call!)
+        }
         return true
     }
 
@@ -22,6 +35,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
+
+        
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         
@@ -55,8 +70,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } error: { error in
             print(error)
         }
-        self.plugin?.updatePlayerRate(call!)
-//
+        
+        if self.isPlaying {
+            self.plugin?.pause(call!)
+        } else {
+            self.plugin?.play(call!)
+        }
+        self.isPlaying.toggle()
+        
 //        self.plugin?.fetchMediaListStatistics(call!)
 
 //

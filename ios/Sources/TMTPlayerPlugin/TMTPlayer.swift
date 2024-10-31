@@ -26,6 +26,7 @@ public enum MediaItemState: String {
     var isStreaming: Bool
     var isPlaying: Bool
     var isStudy: Bool
+    var isLocalFileUrl: Bool
     var playbackPositionInSeconds: Double
     
     //  Data from plugin to Ionic
@@ -44,6 +45,7 @@ public enum MediaItemState: String {
         case isStreaming
         case isPlaying
         case isStudy
+        case isLocalFileUrl
         case playbackPositionInSeconds
     }
     
@@ -59,6 +61,7 @@ public enum MediaItemState: String {
         self.isStreaming = try container.decodeIfPresent(Bool.self, forKey: .isStreaming) ?? false
         self.isPlaying = try container.decodeIfPresent(Bool.self, forKey: .isPlaying) ?? false
         self.isStudy = try container.decodeIfPresent(Bool.self, forKey: .isStudy) ?? false
+        self.isLocalFileUrl = try container.decodeIfPresent(Bool.self, forKey: .isLocalFileUrl) ?? false
         self.playbackPositionInSeconds = try container.decodeIfPresent(Double.self, forKey: .playbackPositionInSeconds) ?? 0.0
     }
     
@@ -66,6 +69,7 @@ public enum MediaItemState: String {
         
         var json = [String: String]()
         json["url"] = self.url
+        json["isLocalFileUrl"] = self.isLocalFileUrl ? "1" : "0"
         json["state"] = self.state.rawValue
         json["duration"] = self.duration
         json["durationInSeconds"] = "\(self.durationInSeconds)"
@@ -78,6 +82,7 @@ public enum MediaItemState: String {
         
         var json = [String: String]()
         json["url"] = self.url
+        json["isLocalFileUrl"] = self.isLocalFileUrl ? "1" : "0"
         json["duration"] = self.duration
         json["durationInSeconds"] = "\(self.durationInSeconds)"
         json["position"] = "\(self.lastPlaybackPositionInSeconds)"
@@ -261,7 +266,18 @@ public enum MediaItemState: String {
     
     private func play(item: TMTPlayerItem) {
         
-        guard let url = URL(string: item.url) else {
+        var mediaUrl: URL?
+        if item.isLocalFileUrl {
+            if #available(iOS 16.0, *) {
+                mediaUrl = URL(filePath: item.url)
+            } else {
+                mediaUrl = URL(string: item.url)
+            }
+        } else {
+            mediaUrl = URL(string: item.url)
+        }
+        
+        guard let url = mediaUrl else {
             print("url of media item can not be nil")
             return
         }
@@ -349,7 +365,7 @@ public enum MediaItemState: String {
         
         commandCenter.playCommand.isEnabled = true
         commandCenter.playCommand.addTarget { [weak self] event in
-            self?.avPlayer.play()
+            self?.play()
             return .success
         }
         
