@@ -1,3 +1,5 @@
+import { FetchMediaIOSList } from "../../../../src/app/interfaces/study";
+
 export interface TMTPlayerPlugin {
     echo(options: {
         value: string;
@@ -5,63 +7,47 @@ export interface TMTPlayerPlugin {
         value: string;
     }>;
     playMediaList(options: {
-        value: string;
+        mediaList: string;
     }): Promise<{
         value: string;
     }>;
     addMediaToList(options: {
-        value: string;
+        mediaList: string;
     }): Promise<{
         value: string;
     }>;
-    clearMediaList(options: {
-        value: string;
-    }): Promise<{
+    clearMediaList(): Promise<{
         value: string;
     }>;
-    play(options: {
-        value: string;
-    }): Promise<{
+    play(): Promise<{
         value: string;
     }>;
-    pause(options: {
-        value: string;
-    }): Promise<{
+    pause(): Promise<{
         value: string;
     }>;
-    getCurrentPlayerItemSeekTime(options: {
-        value: string;
-    }): Promise<{
+    getCurrentPlayerItemSeekTime(): Promise<{
         value: string;
     }>;
-    fetchMediaListStatistics(options: {
-        value: string;
-    }): Promise<{
-        value: string;
+    fetchMediaListStatistics(): Promise<{
+        statisticsList: [];
     }>;
     updatePlayerRate(options: {
-        value: string;
+        rate: number;
     }): Promise<{
         value: string;
     }>;
-    getCurrentMediaItemPlaybackInfo(options: {
-        value: string;
-    }): Promise<{
+    getCurrentMediaItemPlaybackInfo(): Promise<{
         value: string;
     }>;
-    removeAllMediaItemsExceptCurrentPlayingItem(options: {
-        value: string;
-    }): Promise<{
+    removeAllMediaItemsExceptCurrentPlayingItem(): Promise<{
         value: string;
     }>;
     seekToTimeInSeconds(options: {
-        value: string;
+        seconds: number;
     }): Promise<{
         value: string;
     }>;
-    checkPlayingMediaList(options: {
-        value: string;
-    }): Promise<{
+    checkPlayingMediaList(): Promise<{
         value: string;
     }>;
 }
