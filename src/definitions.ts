@@ -12,4 +12,6 @@ export interface TMTPlayerPlugin {
   removeAllMediaItemsExceptCurrentPlayingItem(options: { value: string }): Promise<{ value: string }>;  
   seekToTimeInSeconds(options: { value: string }): Promise<{ value: string }>; 
   checkPlayingMediaList(options: { value: string }): Promise<{ value: string }>; 
+  getProgressOfLastPlayedMediaBeforeAppClose(options: { value: string }): Promise<{ value: string }>; 
+  removeProgressOfLastPlayedMedia(options: { value: string }): Promise<{ value: string }>; 
 }

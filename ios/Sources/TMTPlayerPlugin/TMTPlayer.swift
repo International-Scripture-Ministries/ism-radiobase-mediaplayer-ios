@@ -3,6 +3,10 @@ import AVKit
 import Combine
 import MediaPlayer
 
+public enum UserDefaultsKeys: String {
+    case progressOfLastPlayedMediaBeforeAppClose
+}
+
 public enum CurrentMediaItemPlaybackState: String {
     case none, playing, paused, complete
     
@@ -101,6 +105,7 @@ public enum MediaItemState: String {
         super.init()
         try? AVAudioSession.sharedInstance().setCategory(.playback)
         try? AVAudioSession.sharedInstance().setActive(true)
+        self.handleAppWillTerminateObserver()
         self.handlePlayerDidEndPlayingObserver()
         self.setupRemoteCommandCenter()
         
@@ -226,7 +231,17 @@ public enum MediaItemState: String {
             }
         }
     }
-    
+
+    public func getProgressOfLastPlayedMediaBeforeAppClose() -> Double {
+        
+        UserDefaults.standard.double(forKey: UserDefaultsKeys.progressOfLastPlayedMediaBeforeAppClose.rawValue)
+    }
+
+    public func removeProgressOfLastPlayedMedia() {
+        
+        UserDefaults.standard.set(nil, forKey: UserDefaultsKeys.progressOfLastPlayedMediaBeforeAppClose.rawValue)
+    }
+
     public func removeAllMediaItemsExceptCurrentPlayingItem() {
         
         self.mediaList.removeAll { !$0.playbackState.isMediaPlayingOrPaused }
@@ -299,6 +314,18 @@ public enum MediaItemState: String {
         }
     }
     
+    private func handleAppWillTerminateObserver() {
+        
+        NotificationCenter.default.publisher(for: UIApplication.willTerminateNotification)
+            .sink { _ in 
+            if let currentItemDuration = self.mediaList[safe: self.currentMediaItemIndex]?.lastPlaybackPositionInSeconds {
+                UserDefaults.standard.set(currentItemDuration, forKey: UserDefaultsKeys.progressOfLastPlayedMediaBeforeAppClose.rawValue)
+                UserDefaults.standard.synchronize()
+            }
+        }
+        .store(in: &cancellables)
+    }
+
     private func handlePlayerDidEndPlayingObserver() {
         
         NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)

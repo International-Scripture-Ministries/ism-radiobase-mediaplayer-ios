@@ -26,6 +26,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             self.plugin?.updatePlayerRate(call!)
         }
+        
+        //  get last saved progress of media before app close
+        
+//        let callToRemoveSavedProgress = CAPPluginCall.init(callbackId: "0", options: [:]) { result, call in
+//            print(result)
+//            print(call)
+//        } error: { error in
+//            print(error)
+//        }
+//        self.plugin?.removeProgressOfLastPlayedMedia(callToRemoveSavedProgress!)
+
+        
+        let call = CAPPluginCall.init(callbackId: "0", options: [:]) { result, call in
+            print(result?.resultData)
+            print(call)
+        } error: { error in
+            print(error)
+        }
+        self.plugin?.getProgressOfLastPlayedMediaBeforeAppClose(call!)
+        
         return true
     }
 

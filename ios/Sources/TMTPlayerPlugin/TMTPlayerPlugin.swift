@@ -22,7 +22,9 @@ public class TMTPlayerPlugin: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "getCurrentMediaItemPlaybackInfo", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "removeAllMediaItemsExceptCurrentPlayingItem", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "seekToTimeInSeconds", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "checkPlayingMediaList", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "checkPlayingMediaList", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "getProgressOfLastPlayedMediaBeforeAppClose", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "removeProgressOfLastPlayedMedia", returnType: CAPPluginReturnPromise)
     ]
     
     @objc func echo(_ call: CAPPluginCall) {
@@ -174,5 +176,20 @@ public class TMTPlayerPlugin: CAPPlugin, CAPBridgedPlugin {
                     "playerDidFinishPlayingItem": item.url
                 ])
         })
+    }
+    
+    @objc public func getProgressOfLastPlayedMediaBeforeAppClose(_ call: CAPPluginCall) {
+        
+        call.resolve([
+            "progress": "\(TMTPlayer.shared.getProgressOfLastPlayedMediaBeforeAppClose())"
+        ])
+    }
+
+    @objc public func removeProgressOfLastPlayedMedia(_ call: CAPPluginCall) {
+        
+        TMTPlayer.shared.removeProgressOfLastPlayedMedia()
+        call.resolve([
+            "removeProgressOfLastPlayedMedia": "true"
+        ])
     }
 }

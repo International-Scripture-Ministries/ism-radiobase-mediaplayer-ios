@@ -67,4 +67,12 @@ export class TMTPlayerWeb extends WebPlugin implements TMTPlayerPlugin {
     console.log('checkPlayingMediaList', options);
     return options;
   }
+  async getProgressOfLastPlayedMediaBeforeAppClose(options: { value: string }): Promise<{ value: string }> {
+    console.log('getProgressOfLastPlayedMediaBeforeAppClose', options);
+    return options;
+  }
+  async removeProgressOfLastPlayedMedia(options: { value: string }): Promise<{ value: string }> {
+    console.log('removeProgressOfLastPlayedMedia', options);
+    return options;
+  }
 }
