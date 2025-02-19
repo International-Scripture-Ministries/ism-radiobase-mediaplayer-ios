@@ -23,8 +23,8 @@ public class TMTPlayerPlugin: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "removeAllMediaItemsExceptCurrentPlayingItem", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "seekToTimeInSeconds", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "checkPlayingMediaList", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "getProgressOfLastPlayedMediaBeforeAppClose", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "removeProgressOfLastPlayedMedia", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "getStatisticsOfLastPlayedMediaBeforeAppClose", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "removeStatisticsOfLastPlayedMedia", returnType: CAPPluginReturnPromise)
     ]
     
     @objc func echo(_ call: CAPPluginCall) {
@@ -178,18 +178,19 @@ public class TMTPlayerPlugin: CAPPlugin, CAPBridgedPlugin {
         })
     }
     
-    @objc public func getProgressOfLastPlayedMediaBeforeAppClose(_ call: CAPPluginCall) {
+    @objc public func getStatisticsOfLastPlayedMediaBeforeAppClose(_ call: CAPPluginCall) {
         
+        let statisticsList = TMTPlayer.shared.getStatisticsOfLastPlayedMediaBeforeAppClose()
         call.resolve([
-            "progress": "\(TMTPlayer.shared.getProgressOfLastPlayedMediaBeforeAppClose())"
+            "statisticsList": statisticsList
         ])
     }
 
-    @objc public func removeProgressOfLastPlayedMedia(_ call: CAPPluginCall) {
+    @objc public func removeStatisticsOfLastPlayedMedia(_ call: CAPPluginCall) {
         
-        TMTPlayer.shared.removeProgressOfLastPlayedMedia()
+        TMTPlayer.shared.removeStatisticsOfLastPlayedMedia()
         call.resolve([
-            "removeProgressOfLastPlayedMedia": "true"
+            "removeStatisticsOfLastPlayedMedia": "true"
         ])
     }
 }

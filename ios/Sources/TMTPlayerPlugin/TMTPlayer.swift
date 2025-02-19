@@ -4,7 +4,7 @@ import Combine
 import MediaPlayer
 
 public enum UserDefaultsKeys: String {
-    case progressOfLastPlayedMediaBeforeAppClose
+    case statisticsOfLastPlayedMediaBeforeAppClose
 }
 
 public enum CurrentMediaItemPlaybackState: String {
@@ -232,14 +232,17 @@ public enum MediaItemState: String {
         }
     }
 
-    public func getProgressOfLastPlayedMediaBeforeAppClose() -> Double {
+    public func getStatisticsOfLastPlayedMediaBeforeAppClose() -> Array<[String:String]> {
         
-        UserDefaults.standard.double(forKey: UserDefaultsKeys.progressOfLastPlayedMediaBeforeAppClose.rawValue)
+        if let statistics = UserDefaults.standard.value(forKey: UserDefaultsKeys.statisticsOfLastPlayedMediaBeforeAppClose.rawValue) as? Array<[String:String]> {
+            return statistics
+        }
+        return [[:]]
     }
 
-    public func removeProgressOfLastPlayedMedia() {
+    public func removeStatisticsOfLastPlayedMedia() {
         
-        UserDefaults.standard.set(nil, forKey: UserDefaultsKeys.progressOfLastPlayedMediaBeforeAppClose.rawValue)
+        UserDefaults.standard.set(nil, forKey: UserDefaultsKeys.statisticsOfLastPlayedMediaBeforeAppClose.rawValue)
     }
 
     public func removeAllMediaItemsExceptCurrentPlayingItem() {
@@ -317,11 +320,11 @@ public enum MediaItemState: String {
     private func handleAppWillTerminateObserver() {
         
         NotificationCenter.default.publisher(for: UIApplication.willTerminateNotification)
-            .sink { _ in 
-            if let currentItemDuration = self.mediaList[safe: self.currentMediaItemIndex]?.lastPlaybackPositionInSeconds {
-                UserDefaults.standard.set(currentItemDuration, forKey: UserDefaultsKeys.progressOfLastPlayedMediaBeforeAppClose.rawValue)
+            .sink { _ in
+                let list = self.fetchMediaListStatistics()
+                UserDefaults.standard.set(list, forKey: UserDefaultsKeys.statisticsOfLastPlayedMediaBeforeAppClose.rawValue)
                 UserDefaults.standard.synchronize()
-            }
+
         }
         .store(in: &cancellables)
     }

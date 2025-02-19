@@ -50,10 +50,10 @@ export interface TMTPlayerPlugin {
     checkPlayingMediaList(): Promise<{
         value: string;
     }>;
-    getProgressOfLastPlayedMediaBeforeAppClose(): Promise<{
+    getStatisticsOfLastPlayedMediaBeforeAppClose(): Promise<{
         value: string
     }>;
-    removeProgressOfLastPlayedMedia(): Promise<{
+    removeStatisticsOfLastPlayedMedia(): Promise<{
         value: string
     }>;    
 }

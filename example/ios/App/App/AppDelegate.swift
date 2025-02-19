@@ -27,15 +27,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.plugin?.updatePlayerRate(call!)
         }
         
-        //  get last saved progress of media before app close
+        //  get statistics of last played media before app close
         
-//        let callToRemoveSavedProgress = CAPPluginCall.init(callbackId: "0", options: [:]) { result, call in
-//            print(result)
+//        let callToRemoveSavedStatistics = CAPPluginCall.init(callbackId: "0", options: [:]) { result, call in
+//            print(result?.resultData)
 //            print(call)
 //        } error: { error in
 //            print(error)
 //        }
-//        self.plugin?.removeProgressOfLastPlayedMedia(callToRemoveSavedProgress!)
+//        self.plugin?.removeStatisticsOfLastPlayedMedia(callToRemoveSavedStatistics!)
 
         
         let call = CAPPluginCall.init(callbackId: "0", options: [:]) { result, call in
@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } error: { error in
             print(error)
         }
-        self.plugin?.getProgressOfLastPlayedMediaBeforeAppClose(call!)
+        self.plugin?.getStatisticsOfLastPlayedMediaBeforeAppClose(call!)
         
         return true
     }
@@ -85,7 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
         
         let call = CAPPluginCall.init(callbackId: "0", options: ["rate": 2.0]) { result, call in
-            print(result)
+            print(result?.resultData)
             print(call)
         } error: { error in
             print(error)
