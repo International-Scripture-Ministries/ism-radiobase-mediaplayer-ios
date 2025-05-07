@@ -28,6 +28,9 @@ public class TMTPlayerPlugin: CAPPlugin, CAPBridgedPlugin {
     ]
     
     @objc func echo(_ call: CAPPluginCall) {
+        
+        TMTPlayer.shared.initialSetup()
+        
         let value = call.getString("value") ?? ""
         call.resolve([
             "value": value

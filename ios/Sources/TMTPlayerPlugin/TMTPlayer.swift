@@ -143,6 +143,10 @@ public enum MediaItemState: String {
         return value
     }
 
+    public func initialSetup() {
+        //  Do nothing
+    }
+    
     public func startPlayingMediaList(_ list: [TMTPlayerItem], mediaItemDidEndPlayingSuccess: @escaping ((TMTPlayerItem) -> Void)) {
         
         self.mediaList = list
@@ -401,7 +405,7 @@ public enum MediaItemState: String {
         
         commandCenter.pauseCommand.isEnabled = true
         commandCenter.pauseCommand.addTarget { [weak self] event in
-            self?.avPlayer.pause()
+            self?.pause()
             return .success
         }
 
