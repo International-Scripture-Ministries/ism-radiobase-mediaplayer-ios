@@ -26,6 +26,8 @@ npx cap sync
 * [`removeAllMediaItemsExceptCurrentPlayingItem(...)`](#removeallmediaitemsexceptcurrentplayingitem)
 * [`seekToTimeInSeconds(...)`](#seektotimeinseconds)
 * [`checkPlayingMediaList(...)`](#checkplayingmedialist)
+* [`getStatisticsOfLastPlayedMediaBeforeAppClose(...)`](#getstatisticsoflastplayedmediabeforeappclose)
+* [`removeStatisticsOfLastPlayedMedia(...)`](#removestatisticsoflastplayedmedia)
 
 </docgen-index>
 
@@ -216,6 +218,36 @@ seekToTimeInSeconds(options: { value: string; }) => Promise<{ value: string; }>
 
 ```typescript
 checkPlayingMediaList(options: { value: string; }) => Promise<{ value: string; }>
+```
+
+| Param         | Type                            |
+| ------------- | ------------------------------- |
+| **`options`** | <code>{ value: string; }</code> |
+
+**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+
+--------------------
+
+
+### getStatisticsOfLastPlayedMediaBeforeAppClose(...)
+
+```typescript
+getStatisticsOfLastPlayedMediaBeforeAppClose(options: { value: string; }) => Promise<{ value: string; }>
+```
+
+| Param         | Type                            |
+| ------------- | ------------------------------- |
+| **`options`** | <code>{ value: string; }</code> |
+
+**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+
+--------------------
+
+
+### removeStatisticsOfLastPlayedMedia(...)
+
+```typescript
+removeStatisticsOfLastPlayedMedia(options: { value: string; }) => Promise<{ value: string; }>
 ```
 
 | Param         | Type                            |

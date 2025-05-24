@@ -58,6 +58,14 @@ var capacitorTMTPlayer = (function (exports, core) {
             console.log('checkPlayingMediaList', options);
             return options;
         }
+        async getStatisticsOfLastPlayedMediaBeforeAppClose(options) {
+            console.log('getStatisticsOfLastPlayedMediaBeforeAppClose', options);
+            return options;
+        }
+        async removeStatisticsOfLastPlayedMedia(options) {
+            console.log('removeStatisticsOfLastPlayedMedia', options);
+            return options;
+        }
     }
 
     var web = /*#__PURE__*/Object.freeze({

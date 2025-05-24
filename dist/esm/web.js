@@ -52,5 +52,13 @@ export class TMTPlayerWeb extends WebPlugin {
         console.log('checkPlayingMediaList', options);
         return options;
     }
+    async getStatisticsOfLastPlayedMediaBeforeAppClose(options) {
+        console.log('getStatisticsOfLastPlayedMediaBeforeAppClose', options);
+        return options;
+    }
+    async removeStatisticsOfLastPlayedMedia(options) {
+        console.log('removeStatisticsOfLastPlayedMedia', options);
+        return options;
+    }
 }
 //# sourceMappingURL=web.js.map

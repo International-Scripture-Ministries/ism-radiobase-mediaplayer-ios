@@ -66,4 +66,14 @@ export declare class TMTPlayerWeb extends WebPlugin implements TMTPlayerPlugin {
     }): Promise<{
         value: string;
     }>;
+    getStatisticsOfLastPlayedMediaBeforeAppClose(options: {
+        value: string;
+    }): Promise<{
+        value: string;
+    }>;
+    removeStatisticsOfLastPlayedMedia(options: {
+        value: string;
+    }): Promise<{
+        value: string;
+    }>;
 }
