@@ -1,78 +1,80 @@
-import { WebPlugin } from '@capacitor/core';
+// import { FetchMediaIOSList } from "../../../../src/app/interfaces/study";
 
-import type { TMTPlayerPlugin } from './definitions';
+import { WebPlugin } from '@capacitor/core';
+import { TMTPlayerPlugin } from './definitions';
 
 export class TMTPlayerWeb extends WebPlugin implements TMTPlayerPlugin {
-
   async echo(options: { value: string }): Promise<{ value: string }> {
-    console.log('ECHO', options);
-    return options;
+    return { value: options.value };
   }
 
-  async playMediaList(options: { value: string }): Promise<{ value: string }> {
-    console.log('playMediaList', options);
-    return options;
+  async playMediaList(options: { mediaList: string }): Promise<{ value: string }> {
+    console.log('Playing media list:', options.mediaList);
+    return { value: 'Playing media list' };
   }
 
-  async addMediaToList(options: { value: string }): Promise<{ value: string }> {
-    console.log('addMediaToList', options);
-    return options;
+  async addMediaToList(options: { mediaList: string }): Promise<{ value: string }> {
+    console.log('Adding media to list:', options.mediaList);
+    return { value: 'Media added' };
   }
 
-  async clearMediaList(options: { value: string }): Promise<{ value: string }> {
-    console.log('clearMediaList', options);
-    return options;
+  async clearMediaList(): Promise<{ value: string }> {
+    console.log('Media list cleared');
+    return { value: 'Media list cleared' };
   }
 
-  async play(options: { value: string }): Promise<{ value: string }> {
-    console.log('play', options);
-    return options;
+  async play(): Promise<{ value: string }> {
+    console.log('Playing media');
+    return { value: 'Playing' };
   }
 
-  async pause(options: { value: string }): Promise<{ value: string }> {
-    console.log('pause', options);
-    return options;
+  async pause(): Promise<{ value: string }> {
+    console.log('Paused media');
+    return { value: 'Paused' };
   }
 
-  async getCurrentPlayerItemSeekTime(options: { value: string }): Promise<{ value: string }> {
-    console.log('getCurrentPlayerItemSeekTime', options);
-    return options;
+  async getCurrentPlayerItemSeekTime(): Promise<{ time: number }> {
+    console.log('Getting current seek time');
+    return { time: 42 };
   }
 
-  async fetchMediaListStatistics(options: { value: string }): Promise<{ value: string }> {
-    console.log('fetchMediaListStatistics', options);
-    return options;
+  async fetchMediaListStatistics(): Promise<{ statisticsList: any[] }> {
+    console.log('Fetching media list statistics');
+    return { statisticsList: [] };
   }
 
-  async updatePlayerRate(options: { value: string }): Promise<{ value: string }> {
-    console.log('fetchMediaLupdatePlayerRateistStatistics', options);
-    return options;
+  async updatePlayerRate(options: { rate: number }): Promise<{ value: string }> {
+    console.log('Updating player rate to', options.rate);
+    return { value: 'Rate updated' };
   }
 
-  async getCurrentMediaItemPlaybackInfo(options: { value: string }): Promise<{ value: string }> {
-    console.log('getCurrentMediaItemPlaybackInfo', options);
-    return options;
+  async getCurrentMediaItemPlaybackInfo(): Promise<{ info: any }> {
+    console.log('Getting current playback info');
+    return { info: { title: 'Sample Media', duration: 120 } };
   }
 
-  async removeAllMediaItemsExceptCurrentPlayingItem(options: { value: string }): Promise<{ value: string }> {
-    console.log('removeAllMediaItemsExceptCurrentPlayingItem', options);
-    return options;
+  async removeAllMediaItemsExceptCurrentPlayingItem(): Promise<{ value: string }> {
+    console.log('Removing all media items except current');
+    return { value: 'Remaining current item only' };
   }
 
-  async seekToTimeInSeconds(options: { value: string }): Promise<{ value: string }> {
-    console.log('seekToTimeInSeconds', options);
-    return options;
+  async seekToTimeInSeconds(options: { seconds: number }): Promise<{ value: string }> {
+    console.log('Seeking to time (sec):', options.seconds);
+    return { value: 'Seeked' };
   }
-  async checkPlayingMediaList(options: { value: string }): Promise<{ value: string }> {
-    console.log('checkPlayingMediaList', options);
-    return options;
+
+  async checkPlayingMediaList(): Promise<{ mediaList: any[] }> {
+    console.log('Checking current media list');
+    return { mediaList: ['track1', 'track2'] };
   }
-  async getStatisticsOfLastPlayedMediaBeforeAppClose(options: { value: string }): Promise<{ value: string }> {
-    console.log('getStatisticsOfLastPlayedMediaBeforeAppClose', options);
-    return options;
+
+  async getStatisticsOfLastPlayedMediaBeforeAppClose(): Promise<{ statistics: any }> {
+    console.log('Getting last media statistics');
+    return { statistics: { title: 'Track 1', duration: 180 } };
   }
-  async removeStatisticsOfLastPlayedMedia(options: { value: string }): Promise<{ value: string }> {
-    console.log('removeStatisticsOfLastPlayedMedia', options);
-    return options;
+
+  async removeStatisticsOfLastPlayedMedia(): Promise<{ value: string }> {
+    console.log('Removing last played media statistics');
+    return { value: 'Removed statistics' };
   }
 }

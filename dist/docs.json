@@ -23,12 +23,12 @@
       },
       {
         "name": "playMediaList",
-        "signature": "(options: { value: string; }) => Promise<{ value: string; }>",
+        "signature": "(options: { mediaList: string; }) => Promise<{ value: string; }>",
         "parameters": [
           {
             "name": "options",
             "docs": "",
-            "type": "{ value: string; }"
+            "type": "{ mediaList: string; }"
           }
         ],
         "returns": "Promise<{ value: string; }>",
@@ -39,12 +39,12 @@
       },
       {
         "name": "addMediaToList",
-        "signature": "(options: { value: string; }) => Promise<{ value: string; }>",
+        "signature": "(options: { mediaList: string; }) => Promise<{ value: string; }>",
         "parameters": [
           {
             "name": "options",
             "docs": "",
-            "type": "{ value: string; }"
+            "type": "{ mediaList: string; }"
           }
         ],
         "returns": "Promise<{ value: string; }>",
@@ -55,14 +55,8 @@
       },
       {
         "name": "clearMediaList",
-        "signature": "(options: { value: string; }) => Promise<{ value: string; }>",
-        "parameters": [
-          {
-            "name": "options",
-            "docs": "",
-            "type": "{ value: string; }"
-          }
-        ],
+        "signature": "() => Promise<{ value: string; }>",
+        "parameters": [],
         "returns": "Promise<{ value: string; }>",
         "tags": [],
         "docs": "",
@@ -71,14 +65,8 @@
       },
       {
         "name": "play",
-        "signature": "(options: { value: string; }) => Promise<{ value: string; }>",
-        "parameters": [
-          {
-            "name": "options",
-            "docs": "",
-            "type": "{ value: string; }"
-          }
-        ],
+        "signature": "() => Promise<{ value: string; }>",
+        "parameters": [],
         "returns": "Promise<{ value: string; }>",
         "tags": [],
         "docs": "",
@@ -87,14 +75,8 @@
       },
       {
         "name": "pause",
-        "signature": "(options: { value: string; }) => Promise<{ value: string; }>",
-        "parameters": [
-          {
-            "name": "options",
-            "docs": "",
-            "type": "{ value: string; }"
-          }
-        ],
+        "signature": "() => Promise<{ value: string; }>",
+        "parameters": [],
         "returns": "Promise<{ value: string; }>",
         "tags": [],
         "docs": "",
@@ -103,15 +85,9 @@
       },
       {
         "name": "getCurrentPlayerItemSeekTime",
-        "signature": "(options: { value: string; }) => Promise<{ value: string; }>",
-        "parameters": [
-          {
-            "name": "options",
-            "docs": "",
-            "type": "{ value: string; }"
-          }
-        ],
-        "returns": "Promise<{ value: string; }>",
+        "signature": "() => Promise<{ time: number; }>",
+        "parameters": [],
+        "returns": "Promise<{ time: number; }>",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -119,15 +95,9 @@
       },
       {
         "name": "fetchMediaListStatistics",
-        "signature": "(options: { value: string; }) => Promise<{ value: string; }>",
-        "parameters": [
-          {
-            "name": "options",
-            "docs": "",
-            "type": "{ value: string; }"
-          }
-        ],
-        "returns": "Promise<{ value: string; }>",
+        "signature": "() => Promise<{ statisticsList: any[]; }>",
+        "parameters": [],
+        "returns": "Promise<{ statisticsList: any[]; }>",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -135,12 +105,12 @@
       },
       {
         "name": "updatePlayerRate",
-        "signature": "(options: { value: string; }) => Promise<{ value: string; }>",
+        "signature": "(options: { rate: number; }) => Promise<{ value: string; }>",
         "parameters": [
           {
             "name": "options",
             "docs": "",
-            "type": "{ value: string; }"
+            "type": "{ rate: number; }"
           }
         ],
         "returns": "Promise<{ value: string; }>",
@@ -151,15 +121,9 @@
       },
       {
         "name": "getCurrentMediaItemPlaybackInfo",
-        "signature": "(options: { value: string; }) => Promise<{ value: string; }>",
-        "parameters": [
-          {
-            "name": "options",
-            "docs": "",
-            "type": "{ value: string; }"
-          }
-        ],
-        "returns": "Promise<{ value: string; }>",
+        "signature": "() => Promise<{ info: any; }>",
+        "parameters": [],
+        "returns": "Promise<{ info: any; }>",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -167,14 +131,8 @@
       },
       {
         "name": "removeAllMediaItemsExceptCurrentPlayingItem",
-        "signature": "(options: { value: string; }) => Promise<{ value: string; }>",
-        "parameters": [
-          {
-            "name": "options",
-            "docs": "",
-            "type": "{ value: string; }"
-          }
-        ],
+        "signature": "() => Promise<{ value: string; }>",
+        "parameters": [],
         "returns": "Promise<{ value: string; }>",
         "tags": [],
         "docs": "",
@@ -183,12 +141,12 @@
       },
       {
         "name": "seekToTimeInSeconds",
-        "signature": "(options: { value: string; }) => Promise<{ value: string; }>",
+        "signature": "(options: { seconds: number; }) => Promise<{ value: string; }>",
         "parameters": [
           {
             "name": "options",
             "docs": "",
-            "type": "{ value: string; }"
+            "type": "{ seconds: number; }"
           }
         ],
         "returns": "Promise<{ value: string; }>",
@@ -199,15 +157,9 @@
       },
       {
         "name": "checkPlayingMediaList",
-        "signature": "(options: { value: string; }) => Promise<{ value: string; }>",
-        "parameters": [
-          {
-            "name": "options",
-            "docs": "",
-            "type": "{ value: string; }"
-          }
-        ],
-        "returns": "Promise<{ value: string; }>",
+        "signature": "() => Promise<{ mediaList: any[]; }>",
+        "parameters": [],
+        "returns": "Promise<{ mediaList: any[]; }>",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -215,15 +167,9 @@
       },
       {
         "name": "getStatisticsOfLastPlayedMediaBeforeAppClose",
-        "signature": "(options: { value: string; }) => Promise<{ value: string; }>",
-        "parameters": [
-          {
-            "name": "options",
-            "docs": "",
-            "type": "{ value: string; }"
-          }
-        ],
-        "returns": "Promise<{ value: string; }>",
+        "signature": "() => Promise<{ statistics: any; }>",
+        "parameters": [],
+        "returns": "Promise<{ statistics: any; }>",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -231,14 +177,8 @@
       },
       {
         "name": "removeStatisticsOfLastPlayedMedia",
-        "signature": "(options: { value: string; }) => Promise<{ value: string; }>",
-        "parameters": [
-          {
-            "name": "options",
-            "docs": "",
-            "type": "{ value: string; }"
-          }
-        ],
+        "signature": "() => Promise<{ value: string; }>",
+        "parameters": [],
         "returns": "Promise<{ value: string; }>",
         "tags": [],
         "docs": "",

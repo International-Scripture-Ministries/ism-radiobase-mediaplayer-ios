@@ -5,73 +5,53 @@ export interface TMTPlayerPlugin {
         value: string;
     }>;
     playMediaList(options: {
-        value: string;
+        mediaList: string;
     }): Promise<{
         value: string;
     }>;
     addMediaToList(options: {
-        value: string;
+        mediaList: string;
     }): Promise<{
         value: string;
     }>;
-    clearMediaList(options: {
-        value: string;
-    }): Promise<{
+    clearMediaList(): Promise<{
         value: string;
     }>;
-    play(options: {
-        value: string;
-    }): Promise<{
+    play(): Promise<{
         value: string;
     }>;
-    pause(options: {
-        value: string;
-    }): Promise<{
+    pause(): Promise<{
         value: string;
     }>;
-    getCurrentPlayerItemSeekTime(options: {
-        value: string;
-    }): Promise<{
-        value: string;
+    getCurrentPlayerItemSeekTime(): Promise<{
+        time: number;
     }>;
-    fetchMediaListStatistics(options: {
-        value: string;
-    }): Promise<{
-        value: string;
+    fetchMediaListStatistics(): Promise<{
+        statisticsList: any[];
     }>;
     updatePlayerRate(options: {
-        value: string;
+        rate: number;
     }): Promise<{
         value: string;
     }>;
-    getCurrentMediaItemPlaybackInfo(options: {
-        value: string;
-    }): Promise<{
-        value: string;
+    getCurrentMediaItemPlaybackInfo(): Promise<{
+        info: any;
     }>;
-    removeAllMediaItemsExceptCurrentPlayingItem(options: {
-        value: string;
-    }): Promise<{
+    removeAllMediaItemsExceptCurrentPlayingItem(): Promise<{
         value: string;
     }>;
     seekToTimeInSeconds(options: {
-        value: string;
+        seconds: number;
     }): Promise<{
         value: string;
     }>;
-    checkPlayingMediaList(options: {
-        value: string;
-    }): Promise<{
-        value: string;
+    checkPlayingMediaList(): Promise<{
+        mediaList: any[];
     }>;
-    getStatisticsOfLastPlayedMediaBeforeAppClose(options: {
-        value: string;
-    }): Promise<{
-        value: string;
+    getStatisticsOfLastPlayedMediaBeforeAppClose(): Promise<{
+        statistics: any;
     }>;
-    removeStatisticsOfLastPlayedMedia(options: {
-        value: string;
-    }): Promise<{
+    removeStatisticsOfLastPlayedMedia(): Promise<{
         value: string;
     }>;
 }

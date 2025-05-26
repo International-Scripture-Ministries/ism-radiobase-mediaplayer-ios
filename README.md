@@ -16,18 +16,18 @@ npx cap sync
 * [`echo(...)`](#echo)
 * [`playMediaList(...)`](#playmedialist)
 * [`addMediaToList(...)`](#addmediatolist)
-* [`clearMediaList(...)`](#clearmedialist)
-* [`play(...)`](#play)
-* [`pause(...)`](#pause)
-* [`getCurrentPlayerItemSeekTime(...)`](#getcurrentplayeritemseektime)
-* [`fetchMediaListStatistics(...)`](#fetchmedialiststatistics)
+* [`clearMediaList()`](#clearmedialist)
+* [`play()`](#play)
+* [`pause()`](#pause)
+* [`getCurrentPlayerItemSeekTime()`](#getcurrentplayeritemseektime)
+* [`fetchMediaListStatistics()`](#fetchmedialiststatistics)
 * [`updatePlayerRate(...)`](#updateplayerrate)
-* [`getCurrentMediaItemPlaybackInfo(...)`](#getcurrentmediaitemplaybackinfo)
-* [`removeAllMediaItemsExceptCurrentPlayingItem(...)`](#removeallmediaitemsexceptcurrentplayingitem)
+* [`getCurrentMediaItemPlaybackInfo()`](#getcurrentmediaitemplaybackinfo)
+* [`removeAllMediaItemsExceptCurrentPlayingItem()`](#removeallmediaitemsexceptcurrentplayingitem)
 * [`seekToTimeInSeconds(...)`](#seektotimeinseconds)
-* [`checkPlayingMediaList(...)`](#checkplayingmedialist)
-* [`getStatisticsOfLastPlayedMediaBeforeAppClose(...)`](#getstatisticsoflastplayedmediabeforeappclose)
-* [`removeStatisticsOfLastPlayedMedia(...)`](#removestatisticsoflastplayedmedia)
+* [`checkPlayingMediaList()`](#checkplayingmedialist)
+* [`getStatisticsOfLastPlayedMediaBeforeAppClose()`](#getstatisticsoflastplayedmediabeforeappclose)
+* [`removeStatisticsOfLastPlayedMedia()`](#removestatisticsoflastplayedmedia)
 
 </docgen-index>
 
@@ -52,12 +52,12 @@ echo(options: { value: string; }) => Promise<{ value: string; }>
 ### playMediaList(...)
 
 ```typescript
-playMediaList(options: { value: string; }) => Promise<{ value: string; }>
+playMediaList(options: { mediaList: string; }) => Promise<{ value: string; }>
 ```
 
-| Param         | Type                            |
-| ------------- | ------------------------------- |
-| **`options`** | <code>{ value: string; }</code> |
+| Param         | Type                                |
+| ------------- | ----------------------------------- |
+| **`options`** | <code>{ mediaList: string; }</code> |
 
 **Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
 
@@ -67,89 +67,69 @@ playMediaList(options: { value: string; }) => Promise<{ value: string; }>
 ### addMediaToList(...)
 
 ```typescript
-addMediaToList(options: { value: string; }) => Promise<{ value: string; }>
+addMediaToList(options: { mediaList: string; }) => Promise<{ value: string; }>
 ```
 
-| Param         | Type                            |
-| ------------- | ------------------------------- |
-| **`options`** | <code>{ value: string; }</code> |
+| Param         | Type                                |
+| ------------- | ----------------------------------- |
+| **`options`** | <code>{ mediaList: string; }</code> |
 
 **Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
 
 --------------------
 
 
-### clearMediaList(...)
+### clearMediaList()
 
 ```typescript
-clearMediaList(options: { value: string; }) => Promise<{ value: string; }>
+clearMediaList() => Promise<{ value: string; }>
 ```
-
-| Param         | Type                            |
-| ------------- | ------------------------------- |
-| **`options`** | <code>{ value: string; }</code> |
 
 **Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
 
 --------------------
 
 
-### play(...)
+### play()
 
 ```typescript
-play(options: { value: string; }) => Promise<{ value: string; }>
+play() => Promise<{ value: string; }>
 ```
-
-| Param         | Type                            |
-| ------------- | ------------------------------- |
-| **`options`** | <code>{ value: string; }</code> |
 
 **Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
 
 --------------------
 
 
-### pause(...)
+### pause()
 
 ```typescript
-pause(options: { value: string; }) => Promise<{ value: string; }>
+pause() => Promise<{ value: string; }>
 ```
-
-| Param         | Type                            |
-| ------------- | ------------------------------- |
-| **`options`** | <code>{ value: string; }</code> |
 
 **Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
 
 --------------------
 
 
-### getCurrentPlayerItemSeekTime(...)
+### getCurrentPlayerItemSeekTime()
 
 ```typescript
-getCurrentPlayerItemSeekTime(options: { value: string; }) => Promise<{ value: string; }>
+getCurrentPlayerItemSeekTime() => Promise<{ time: number; }>
 ```
 
-| Param         | Type                            |
-| ------------- | ------------------------------- |
-| **`options`** | <code>{ value: string; }</code> |
-
-**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+**Returns:** <code>Promise&lt;{ time: number; }&gt;</code>
 
 --------------------
 
 
-### fetchMediaListStatistics(...)
+### fetchMediaListStatistics()
 
 ```typescript
-fetchMediaListStatistics(options: { value: string; }) => Promise<{ value: string; }>
+fetchMediaListStatistics() => Promise<{ statisticsList: any[]; }>
 ```
 
-| Param         | Type                            |
-| ------------- | ------------------------------- |
-| **`options`** | <code>{ value: string; }</code> |
-
-**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+**Returns:** <code>Promise&lt;{ statisticsList: any[]; }&gt;</code>
 
 --------------------
 
@@ -157,42 +137,34 @@ fetchMediaListStatistics(options: { value: string; }) => Promise<{ value: string
 ### updatePlayerRate(...)
 
 ```typescript
-updatePlayerRate(options: { value: string; }) => Promise<{ value: string; }>
+updatePlayerRate(options: { rate: number; }) => Promise<{ value: string; }>
 ```
 
-| Param         | Type                            |
-| ------------- | ------------------------------- |
-| **`options`** | <code>{ value: string; }</code> |
+| Param         | Type                           |
+| ------------- | ------------------------------ |
+| **`options`** | <code>{ rate: number; }</code> |
 
 **Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
 
 --------------------
 
 
-### getCurrentMediaItemPlaybackInfo(...)
+### getCurrentMediaItemPlaybackInfo()
 
 ```typescript
-getCurrentMediaItemPlaybackInfo(options: { value: string; }) => Promise<{ value: string; }>
+getCurrentMediaItemPlaybackInfo() => Promise<{ info: any; }>
 ```
 
-| Param         | Type                            |
-| ------------- | ------------------------------- |
-| **`options`** | <code>{ value: string; }</code> |
-
-**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+**Returns:** <code>Promise&lt;{ info: any; }&gt;</code>
 
 --------------------
 
 
-### removeAllMediaItemsExceptCurrentPlayingItem(...)
+### removeAllMediaItemsExceptCurrentPlayingItem()
 
 ```typescript
-removeAllMediaItemsExceptCurrentPlayingItem(options: { value: string; }) => Promise<{ value: string; }>
+removeAllMediaItemsExceptCurrentPlayingItem() => Promise<{ value: string; }>
 ```
-
-| Param         | Type                            |
-| ------------- | ------------------------------- |
-| **`options`** | <code>{ value: string; }</code> |
 
 **Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
 
@@ -202,57 +174,45 @@ removeAllMediaItemsExceptCurrentPlayingItem(options: { value: string; }) => Prom
 ### seekToTimeInSeconds(...)
 
 ```typescript
-seekToTimeInSeconds(options: { value: string; }) => Promise<{ value: string; }>
+seekToTimeInSeconds(options: { seconds: number; }) => Promise<{ value: string; }>
 ```
 
-| Param         | Type                            |
-| ------------- | ------------------------------- |
-| **`options`** | <code>{ value: string; }</code> |
+| Param         | Type                              |
+| ------------- | --------------------------------- |
+| **`options`** | <code>{ seconds: number; }</code> |
 
 **Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
 
 --------------------
 
 
-### checkPlayingMediaList(...)
+### checkPlayingMediaList()
 
 ```typescript
-checkPlayingMediaList(options: { value: string; }) => Promise<{ value: string; }>
+checkPlayingMediaList() => Promise<{ mediaList: any[]; }>
 ```
 
-| Param         | Type                            |
-| ------------- | ------------------------------- |
-| **`options`** | <code>{ value: string; }</code> |
-
-**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+**Returns:** <code>Promise&lt;{ mediaList: any[]; }&gt;</code>
 
 --------------------
 
 
-### getStatisticsOfLastPlayedMediaBeforeAppClose(...)
+### getStatisticsOfLastPlayedMediaBeforeAppClose()
 
 ```typescript
-getStatisticsOfLastPlayedMediaBeforeAppClose(options: { value: string; }) => Promise<{ value: string; }>
+getStatisticsOfLastPlayedMediaBeforeAppClose() => Promise<{ statistics: any; }>
 ```
 
-| Param         | Type                            |
-| ------------- | ------------------------------- |
-| **`options`** | <code>{ value: string; }</code> |
-
-**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+**Returns:** <code>Promise&lt;{ statistics: any; }&gt;</code>
 
 --------------------
 
 
-### removeStatisticsOfLastPlayedMedia(...)
+### removeStatisticsOfLastPlayedMedia()
 
 ```typescript
-removeStatisticsOfLastPlayedMedia(options: { value: string; }) => Promise<{ value: string; }>
+removeStatisticsOfLastPlayedMedia() => Promise<{ value: string; }>
 ```
-
-| Param         | Type                            |
-| ------------- | ------------------------------- |
-| **`options`** | <code>{ value: string; }</code> |
 
 **Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
 
