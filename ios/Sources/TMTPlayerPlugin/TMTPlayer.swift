@@ -103,7 +103,7 @@ public enum MediaItemState: String {
     
     private override init() {
         super.init()
-        try? AVAudioSession.sharedInstance().setCategory(.playback)
+        try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .spokenAudio, options: [])
         try? AVAudioSession.sharedInstance().setActive(true)
         self.handleAppWillTerminateObserver()
         self.handlePlayerDidEndPlayingObserver()
@@ -368,6 +368,7 @@ public enum MediaItemState: String {
         nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = avPlayerItem.currentTime().seconds
         nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = avPlayerItem.asset.duration.seconds
         nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = self.avPlayer.rate
+        nowPlayingInfo[MPMediaItemPropertyMediaType] = MPMediaType.anyAudio.rawValue
 
         if tmtPlayerItem.image.isEmpty {
             // Set the metadata
@@ -396,6 +397,10 @@ public enum MediaItemState: String {
     private func setupRemoteCommandCenter() {
         
         let commandCenter = MPRemoteCommandCenter.shared();
+        
+        // Disable next/previous track commands first
+        commandCenter.nextTrackCommand.isEnabled = false
+        commandCenter.previousTrackCommand.isEnabled = false
         
         commandCenter.playCommand.isEnabled = true
         commandCenter.playCommand.addTarget { [weak self] event in
@@ -433,6 +438,10 @@ public enum MediaItemState: String {
             self.updateSeekPositionOnLockScreen()
             return .success
         }
+
+        // Disable other track navigation commands that might interfere
+        commandCenter.seekForwardCommand.isEnabled = false
+        commandCenter.seekBackwardCommand.isEnabled = false
 
         /*
          commandCenter.nextTrackCommand.isEnabled = true

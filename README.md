@@ -37,14 +37,14 @@ npx cap sync
 ### echo(...)
 
 ```typescript
-echo(options: { value: string; }) => Promise<{ value: string; }>
+echo(options: { value: string; }) => any
 ```
 
 | Param         | Type                            |
 | ------------- | ------------------------------- |
 | **`options`** | <code>{ value: string; }</code> |
 
-**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+**Returns:** <code>any</code>
 
 --------------------
 
@@ -52,14 +52,14 @@ echo(options: { value: string; }) => Promise<{ value: string; }>
 ### playMediaList(...)
 
 ```typescript
-playMediaList(options: { mediaList: string; }) => Promise<{ value: string; }>
+playMediaList(options: { mediaList: string; }) => any
 ```
 
 | Param         | Type                                |
 | ------------- | ----------------------------------- |
 | **`options`** | <code>{ mediaList: string; }</code> |
 
-**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+**Returns:** <code>any</code>
 
 --------------------
 
@@ -67,14 +67,14 @@ playMediaList(options: { mediaList: string; }) => Promise<{ value: string; }>
 ### addMediaToList(...)
 
 ```typescript
-addMediaToList(options: { mediaList: string; }) => Promise<{ value: string; }>
+addMediaToList(options: { mediaList: string; }) => any
 ```
 
 | Param         | Type                                |
 | ------------- | ----------------------------------- |
 | **`options`** | <code>{ mediaList: string; }</code> |
 
-**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+**Returns:** <code>any</code>
 
 --------------------
 
@@ -82,10 +82,10 @@ addMediaToList(options: { mediaList: string; }) => Promise<{ value: string; }>
 ### clearMediaList()
 
 ```typescript
-clearMediaList() => Promise<{ value: string; }>
+clearMediaList() => any
 ```
 
-**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+**Returns:** <code>any</code>
 
 --------------------
 
@@ -93,10 +93,10 @@ clearMediaList() => Promise<{ value: string; }>
 ### play()
 
 ```typescript
-play() => Promise<{ value: string; }>
+play() => any
 ```
 
-**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+**Returns:** <code>any</code>
 
 --------------------
 
@@ -104,10 +104,10 @@ play() => Promise<{ value: string; }>
 ### pause()
 
 ```typescript
-pause() => Promise<{ value: string; }>
+pause() => any
 ```
 
-**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+**Returns:** <code>any</code>
 
 --------------------
 
@@ -115,10 +115,10 @@ pause() => Promise<{ value: string; }>
 ### getCurrentPlayerItemSeekTime()
 
 ```typescript
-getCurrentPlayerItemSeekTime() => Promise<{ time: number; }>
+getCurrentPlayerItemSeekTime() => any
 ```
 
-**Returns:** <code>Promise&lt;{ time: number; }&gt;</code>
+**Returns:** <code>any</code>
 
 --------------------
 
@@ -126,10 +126,10 @@ getCurrentPlayerItemSeekTime() => Promise<{ time: number; }>
 ### fetchMediaListStatistics()
 
 ```typescript
-fetchMediaListStatistics() => Promise<{ statisticsList: any[]; }>
+fetchMediaListStatistics() => any
 ```
 
-**Returns:** <code>Promise&lt;{ statisticsList: any[]; }&gt;</code>
+**Returns:** <code>any</code>
 
 --------------------
 
@@ -137,14 +137,14 @@ fetchMediaListStatistics() => Promise<{ statisticsList: any[]; }>
 ### updatePlayerRate(...)
 
 ```typescript
-updatePlayerRate(options: { rate: number; }) => Promise<{ value: string; }>
+updatePlayerRate(options: { rate: number; }) => any
 ```
 
 | Param         | Type                           |
 | ------------- | ------------------------------ |
 | **`options`** | <code>{ rate: number; }</code> |
 
-**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+**Returns:** <code>any</code>
 
 --------------------
 
@@ -152,10 +152,10 @@ updatePlayerRate(options: { rate: number; }) => Promise<{ value: string; }>
 ### getCurrentMediaItemPlaybackInfo()
 
 ```typescript
-getCurrentMediaItemPlaybackInfo() => Promise<{ info: any; }>
+getCurrentMediaItemPlaybackInfo() => any
 ```
 
-**Returns:** <code>Promise&lt;{ info: any; }&gt;</code>
+**Returns:** <code>any</code>
 
 --------------------
 
@@ -163,10 +163,10 @@ getCurrentMediaItemPlaybackInfo() => Promise<{ info: any; }>
 ### removeAllMediaItemsExceptCurrentPlayingItem()
 
 ```typescript
-removeAllMediaItemsExceptCurrentPlayingItem() => Promise<{ value: string; }>
+removeAllMediaItemsExceptCurrentPlayingItem() => any
 ```
 
-**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+**Returns:** <code>any</code>
 
 --------------------
 
@@ -174,14 +174,14 @@ removeAllMediaItemsExceptCurrentPlayingItem() => Promise<{ value: string; }>
 ### seekToTimeInSeconds(...)
 
 ```typescript
-seekToTimeInSeconds(options: { seconds: number; }) => Promise<{ value: string; }>
+seekToTimeInSeconds(options: { seconds: number; }) => any
 ```
 
 | Param         | Type                              |
 | ------------- | --------------------------------- |
 | **`options`** | <code>{ seconds: number; }</code> |
 
-**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+**Returns:** <code>any</code>
 
 --------------------
 
@@ -189,10 +189,10 @@ seekToTimeInSeconds(options: { seconds: number; }) => Promise<{ value: string; }
 ### checkPlayingMediaList()
 
 ```typescript
-checkPlayingMediaList() => Promise<{ mediaList: any[]; }>
+checkPlayingMediaList() => any
 ```
 
-**Returns:** <code>Promise&lt;{ mediaList: any[]; }&gt;</code>
+**Returns:** <code>any</code>
 
 --------------------
 
@@ -200,10 +200,10 @@ checkPlayingMediaList() => Promise<{ mediaList: any[]; }>
 ### getStatisticsOfLastPlayedMediaBeforeAppClose()
 
 ```typescript
-getStatisticsOfLastPlayedMediaBeforeAppClose() => Promise<{ statistics: any; }>
+getStatisticsOfLastPlayedMediaBeforeAppClose() => any
 ```
 
-**Returns:** <code>Promise&lt;{ statistics: any; }&gt;</code>
+**Returns:** <code>any</code>
 
 --------------------
 
@@ -211,10 +211,10 @@ getStatisticsOfLastPlayedMediaBeforeAppClose() => Promise<{ statistics: any; }>
 ### removeStatisticsOfLastPlayedMedia()
 
 ```typescript
-removeStatisticsOfLastPlayedMedia() => Promise<{ value: string; }>
+removeStatisticsOfLastPlayedMedia() => any
 ```
 
-**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+**Returns:** <code>any</code>
 
 --------------------
 

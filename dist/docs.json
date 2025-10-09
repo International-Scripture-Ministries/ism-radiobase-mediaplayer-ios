@@ -7,7 +7,7 @@
     "methods": [
       {
         "name": "echo",
-        "signature": "(options: { value: string; }) => Promise<{ value: string; }>",
+        "signature": "(options: { value: string; }) => any",
         "parameters": [
           {
             "name": "options",
@@ -15,7 +15,7 @@
             "type": "{ value: string; }"
           }
         ],
-        "returns": "Promise<{ value: string; }>",
+        "returns": "any",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -23,7 +23,7 @@
       },
       {
         "name": "playMediaList",
-        "signature": "(options: { mediaList: string; }) => Promise<{ value: string; }>",
+        "signature": "(options: { mediaList: string; }) => any",
         "parameters": [
           {
             "name": "options",
@@ -31,7 +31,7 @@
             "type": "{ mediaList: string; }"
           }
         ],
-        "returns": "Promise<{ value: string; }>",
+        "returns": "any",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -39,7 +39,7 @@
       },
       {
         "name": "addMediaToList",
-        "signature": "(options: { mediaList: string; }) => Promise<{ value: string; }>",
+        "signature": "(options: { mediaList: string; }) => any",
         "parameters": [
           {
             "name": "options",
@@ -47,7 +47,7 @@
             "type": "{ mediaList: string; }"
           }
         ],
-        "returns": "Promise<{ value: string; }>",
+        "returns": "any",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -55,9 +55,9 @@
       },
       {
         "name": "clearMediaList",
-        "signature": "() => Promise<{ value: string; }>",
+        "signature": "() => any",
         "parameters": [],
-        "returns": "Promise<{ value: string; }>",
+        "returns": "any",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -65,9 +65,9 @@
       },
       {
         "name": "play",
-        "signature": "() => Promise<{ value: string; }>",
+        "signature": "() => any",
         "parameters": [],
-        "returns": "Promise<{ value: string; }>",
+        "returns": "any",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -75,9 +75,9 @@
       },
       {
         "name": "pause",
-        "signature": "() => Promise<{ value: string; }>",
+        "signature": "() => any",
         "parameters": [],
-        "returns": "Promise<{ value: string; }>",
+        "returns": "any",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -85,9 +85,9 @@
       },
       {
         "name": "getCurrentPlayerItemSeekTime",
-        "signature": "() => Promise<{ time: number; }>",
+        "signature": "() => any",
         "parameters": [],
-        "returns": "Promise<{ time: number; }>",
+        "returns": "any",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -95,9 +95,9 @@
       },
       {
         "name": "fetchMediaListStatistics",
-        "signature": "() => Promise<{ statisticsList: any[]; }>",
+        "signature": "() => any",
         "parameters": [],
-        "returns": "Promise<{ statisticsList: any[]; }>",
+        "returns": "any",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -105,7 +105,7 @@
       },
       {
         "name": "updatePlayerRate",
-        "signature": "(options: { rate: number; }) => Promise<{ value: string; }>",
+        "signature": "(options: { rate: number; }) => any",
         "parameters": [
           {
             "name": "options",
@@ -113,7 +113,7 @@
             "type": "{ rate: number; }"
           }
         ],
-        "returns": "Promise<{ value: string; }>",
+        "returns": "any",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -121,9 +121,9 @@
       },
       {
         "name": "getCurrentMediaItemPlaybackInfo",
-        "signature": "() => Promise<{ info: any; }>",
+        "signature": "() => any",
         "parameters": [],
-        "returns": "Promise<{ info: any; }>",
+        "returns": "any",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -131,9 +131,9 @@
       },
       {
         "name": "removeAllMediaItemsExceptCurrentPlayingItem",
-        "signature": "() => Promise<{ value: string; }>",
+        "signature": "() => any",
         "parameters": [],
-        "returns": "Promise<{ value: string; }>",
+        "returns": "any",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -141,7 +141,7 @@
       },
       {
         "name": "seekToTimeInSeconds",
-        "signature": "(options: { seconds: number; }) => Promise<{ value: string; }>",
+        "signature": "(options: { seconds: number; }) => any",
         "parameters": [
           {
             "name": "options",
@@ -149,7 +149,7 @@
             "type": "{ seconds: number; }"
           }
         ],
-        "returns": "Promise<{ value: string; }>",
+        "returns": "any",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -157,9 +157,9 @@
       },
       {
         "name": "checkPlayingMediaList",
-        "signature": "() => Promise<{ mediaList: any[]; }>",
+        "signature": "() => any",
         "parameters": [],
-        "returns": "Promise<{ mediaList: any[]; }>",
+        "returns": "any",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -167,9 +167,9 @@
       },
       {
         "name": "getStatisticsOfLastPlayedMediaBeforeAppClose",
-        "signature": "() => Promise<{ statistics: any; }>",
+        "signature": "() => any",
         "parameters": [],
-        "returns": "Promise<{ statistics: any; }>",
+        "returns": "any",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -177,9 +177,9 @@
       },
       {
         "name": "removeStatisticsOfLastPlayedMedia",
-        "signature": "() => Promise<{ value: string; }>",
+        "signature": "() => any",
         "parameters": [],
-        "returns": "Promise<{ value: string; }>",
+        "returns": "any",
         "tags": [],
         "docs": "",
         "complexTypes": [],
