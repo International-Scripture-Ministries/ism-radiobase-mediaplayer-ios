@@ -308,6 +308,7 @@ public enum MediaItemState: String {
         if item.playbackPositionInSeconds > 0.0 {
             self.avPlayer.seek(to: CMTime(seconds: item.playbackPositionInSeconds, preferredTimescale: 1), toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero)
         }
+        try? AVAudioSession.sharedInstance().setActive(true)
         self.play()
         self.setupNowPlaying(avPlayerItem: avPlayerItem, tmtPlayerItem: item)
     }
@@ -360,6 +361,8 @@ public enum MediaItemState: String {
     }
     
     private func setupNowPlaying(avPlayerItem: AVPlayerItem, tmtPlayerItem: TMTPlayerItem) {
+        // Clear previous queue-like metadata
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
 
         // Define Now Playing Info
         var nowPlayingInfo = [String : Any]()
@@ -374,7 +377,6 @@ public enum MediaItemState: String {
             // Set the metadata
             MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
         } else {
-
             DispatchQueue.global().async {
                 if let url = URL(string: tmtPlayerItem.image) {
                     if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
@@ -392,41 +394,43 @@ public enum MediaItemState: String {
         }
         
         MPNowPlayingInfoCenter.default().playbackState = .playing
+        self.setupRemoteCommandCenter()
     }
 
     private func setupRemoteCommandCenter() {
-        
         let commandCenter = MPRemoteCommandCenter.shared();
-        
-        // Disable next/previous track commands first
+
+        // Explicitly disable next/previous track and seek commands
         commandCenter.nextTrackCommand.isEnabled = false
         commandCenter.previousTrackCommand.isEnabled = false
-        
+        commandCenter.seekForwardCommand.isEnabled = false
+        commandCenter.seekBackwardCommand.isEnabled = false
+
         commandCenter.playCommand.isEnabled = true
         commandCenter.playCommand.addTarget { [weak self] event in
             self?.play()
             return .success
         }
-        
+
         commandCenter.pauseCommand.isEnabled = true
         commandCenter.pauseCommand.addTarget { [weak self] event in
             self?.pause()
             return .success
         }
 
+        // Only enable skip forward/backward commands (15s)
         commandCenter.skipForwardCommand.isEnabled = true
         commandCenter.skipForwardCommand.preferredIntervals = [self.skipInterval]
         commandCenter.skipForwardCommand.addTarget { event in
             guard let _ = event.command as? MPSkipIntervalCommand else {
                 return .noSuchContent
             }
-            
             let newTime = self.avPlayer.currentTime() + CMTime(seconds: self.skipInterval.doubleValue, preferredTimescale: .max)
             self.avPlayer.seek(to: newTime)
             self.updateSeekPositionOnLockScreen()
             return .success
         }
-        
+
         commandCenter.skipBackwardCommand.isEnabled = true
         commandCenter.skipBackwardCommand.preferredIntervals = [self.skipInterval]
         commandCenter.skipBackwardCommand.addTarget { event in
@@ -439,33 +443,17 @@ public enum MediaItemState: String {
             return .success
         }
 
-        // Disable other track navigation commands that might interfere
+        // Ensure these are always disabled (no re-enabling logic elsewhere)
+        commandCenter.nextTrackCommand.isEnabled = false
+        commandCenter.previousTrackCommand.isEnabled = false
         commandCenter.seekForwardCommand.isEnabled = false
         commandCenter.seekBackwardCommand.isEnabled = false
 
-        /*
-         commandCenter.nextTrackCommand.isEnabled = true
-         commandCenter.nextTrackCommand.addTarget { [weak self] event in
-             self?.avPlayer.pause()
-             self?.startNextMediaItem()
-             return .success
-         }
-
-         commandCenter.previousTrackCommand.isEnabled = true
-         commandCenter.previousTrackCommand.addTarget { [weak self] event in
-             self?.avPlayer.pause()
-             self?.startNextMediaItem()
-             return .success
-         }
-         */
-
         commandCenter.changePlaybackPositionCommand.isEnabled = true
         commandCenter.changePlaybackPositionCommand.addTarget { [weak self] event in
-
             guard let self else {
                 return .commandFailed
             }
-            
             let playerRate = self.avPlayer.rate
             if let event = event as? MPChangePlaybackPositionCommandEvent {
                 let seekToTime = CMTime(seconds: event.positionTime, preferredTimescale: CMTimeScale(1000))
@@ -475,8 +463,7 @@ public enum MediaItemState: String {
                     }
                 }
                 return .success
-             }
-
+            }
             return .commandFailed
         }
     }
