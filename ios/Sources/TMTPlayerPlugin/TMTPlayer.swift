@@ -3,6 +3,10 @@ import AVKit
 import Combine
 import MediaPlayer
 
+public extension Notification.Name {
+    static let tmtPlayerPlaybackStateDidChange = Notification.Name("TMTPlayerPlaybackStateDidChange")
+}
+
 public enum UserDefaultsKeys: String {
     case statisticsOfLastPlayedMediaBeforeAppClose
 }
@@ -168,6 +172,7 @@ public enum MediaItemState: String {
         self.avPlayer.replaceCurrentItem(with: nil)
         self.mediaList = []
         self.currentMediaItemIndex = -1
+        NotificationCenter.default.post(name: .tmtPlayerPlaybackStateDidChange, object: self)
     }
 
     @discardableResult
@@ -178,6 +183,8 @@ public enum MediaItemState: String {
             self.mediaList[safe: self.currentMediaItemIndex]?.lastPlayedDateTime = Date().timeIntervalSince1970
             self.mediaList[safe: self.currentMediaItemIndex]?.playbackState = .playing
             self.updateCurrentPlayerRate()
+            self.updateNowPlayingPlaybackState(.playing, rate: self.currentAVPlayerRate)
+            NotificationCenter.default.post(name: .tmtPlayerPlaybackStateDidChange, object: self)
             return true
         }
         
@@ -188,6 +195,8 @@ public enum MediaItemState: String {
         
         self.avPlayer.pause()
         self.mediaList[safe: self.currentMediaItemIndex]?.playbackState = .paused
+        self.updateNowPlayingPlaybackState(.paused, rate: 0)
+        NotificationCenter.default.post(name: .tmtPlayerPlaybackStateDidChange, object: self)
     }
 
     public func getCurrentPlayerItemSeekTime() -> Double {
@@ -356,8 +365,42 @@ public enum MediaItemState: String {
         if var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo {
             nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = self.avPlayer.currentTime().seconds
             nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = self.avPlayer.rate
+            let duration = self.avPlayer.currentItem?.duration.seconds ?? 0
+            if duration.isFinite && duration > 0 {
+                nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = duration
+            }
             MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
         }
+    }
+
+    private func updateNowPlayingPlaybackState(_ state: MPNowPlayingPlaybackState, rate: Float) {
+        if var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo {
+            nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = rate
+            nowPlayingInfo[MPNowPlayingInfoPropertyDefaultPlaybackRate] = self.currentAVPlayerRate
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+        }
+        MPNowPlayingInfoCenter.default().playbackState = state
+    }
+
+    private func artworkURL(for source: String) -> URL? {
+        if let url = URL(string: source), url.scheme != nil {
+            return url
+        }
+
+        if source.hasPrefix("/") {
+            return URL(fileURLWithPath: source)
+        }
+
+        let relativePath = source.hasPrefix("./") ? String(source.dropFirst(2)) : source
+        let publicURL = Bundle.main.bundleURL
+            .appendingPathComponent("public", isDirectory: true)
+            .appendingPathComponent(relativePath)
+        if FileManager.default.fileExists(atPath: publicURL.path) {
+            return publicURL
+        }
+
+        let bundleURL = Bundle.main.bundleURL.appendingPathComponent(relativePath)
+        return FileManager.default.fileExists(atPath: bundleURL.path) ? bundleURL : nil
     }
     
     private func setupNowPlaying(avPlayerItem: AVPlayerItem, tmtPlayerItem: TMTPlayerItem) {
@@ -368,37 +411,54 @@ public enum MediaItemState: String {
         var nowPlayingInfo = [String : Any]()
         nowPlayingInfo[MPMediaItemPropertyTitle] = tmtPlayerItem.title
         nowPlayingInfo[MPMediaItemPropertyArtist] = tmtPlayerItem.artist
-        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = avPlayerItem.currentTime().seconds
-        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = avPlayerItem.asset.duration.seconds
-        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = self.avPlayer.rate
+        let elapsed = avPlayerItem.currentTime().seconds
+        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = elapsed.isFinite ? elapsed : 0
+        let duration = avPlayerItem.duration.seconds
+        if duration.isFinite && duration > 0 {
+            nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = duration
+        }
+        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = self.currentAVPlayerRate
+        nowPlayingInfo[MPNowPlayingInfoPropertyDefaultPlaybackRate] = self.currentAVPlayerRate
         nowPlayingInfo[MPMediaItemPropertyMediaType] = MPMediaType.anyAudio.rawValue
 
-        if tmtPlayerItem.image.isEmpty {
-            // Set the metadata
-            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
-        } else {
+        // Publish text and playback state immediately. Artwork is optional and must
+        // never prevent CarPlay from receiving the rest of the metadata.
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+        MPNowPlayingInfoCenter.default().playbackState = .playing
+
+        if !tmtPlayerItem.image.isEmpty {
+            let expectedTitle = tmtPlayerItem.title
             DispatchQueue.global().async {
-                if let url = URL(string: tmtPlayerItem.image) {
+                if let url = self.artworkURL(for: tmtPlayerItem.image) {
                     if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
                         let artwork = MPMediaItemArtwork(boundsSize: image.size, requestHandler: { (_ size : CGSize) -> UIImage in
                             return image
                         })
-                        nowPlayingInfo[MPMediaItemPropertyArtwork] = artwork
-                        
                         DispatchQueue.main.async {
-                            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+                            guard
+                                var current = MPNowPlayingInfoCenter.default().nowPlayingInfo,
+                                current[MPMediaItemPropertyTitle] as? String == expectedTitle
+                            else { return }
+                            current[MPMediaItemPropertyArtwork] = artwork
+                            MPNowPlayingInfoCenter.default().nowPlayingInfo = current
                         }
                     }
                 }
             }
         }
-        
-        MPNowPlayingInfoCenter.default().playbackState = .playing
         self.setupRemoteCommandCenter()
     }
 
     private func setupRemoteCommandCenter() {
         let commandCenter = MPRemoteCommandCenter.shared();
+
+        // The radio player uses the same process-wide command center. Replace its
+        // handlers when TMTPlayer becomes active so one button controls one player.
+        commandCenter.playCommand.removeTarget(nil)
+        commandCenter.pauseCommand.removeTarget(nil)
+        commandCenter.skipForwardCommand.removeTarget(nil)
+        commandCenter.skipBackwardCommand.removeTarget(nil)
+        commandCenter.changePlaybackPositionCommand.removeTarget(nil)
 
         // Explicitly disable next/previous track and seek commands
         commandCenter.nextTrackCommand.isEnabled = false
